@@ -1,0 +1,40 @@
+plugins {
+    id 'sdcit.prunus' version "${prunusVersion}" apply false
+}
+
+allprojects {
+    group = 'sdcit.prunus.examples'
+    version = "${prunusVersion}" as Object
+
+    repositories {
+        // mavenLocal()
+        maven {
+            url "http://nexus.sdcit.co.kr/nexus/content/groups/public/"
+            allowInsecureProtocol true
+        }
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'sdcit.prunus'
+
+    sourceCompatibility = '8'
+    targetCompatibility = '8'
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter'
+
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+    }
+
+    bootJar {
+        enabled = true
+    }
+
+    jar {
+        enabled = false
+    }
+}
