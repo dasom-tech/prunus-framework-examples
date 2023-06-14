@@ -1,6 +1,17 @@
 pluginManagement {
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.toString() == 'sdcit.prunus') {
+                useModule("sdcit.prunus:prunus-gradle-plugin:${prunusVersion}")
+            }
+        }
+    }
     repositories {
-        mavenLocal()
+        maven {
+            url 'http://nexus.sdcit.co.kr/nexus/content/groups/public/'
+            allowInsecureProtocol true
+
+        }
         gradlePluginPortal()
     }
 }

@@ -9,7 +9,7 @@ allprojects {
     repositories {
         // mavenLocal()
         maven {
-            url "http://nexus.sdcit.co.kr/nexus/content/groups/public/"
+            url 'http://nexus.sdcit.co.kr/nexus/content/groups/public/'
             allowInsecureProtocol true
         }
     }
