@@ -1,0 +1,6 @@
+
+dependencies {
+    implementation 'sdcit.prunus:prunus-persistence-mybatis'
+    runtimeOnly 'tmaxsoft.tibero:tibero6-jdbc'
+    runtimeOnly 'com.h2database:h2'
+}
