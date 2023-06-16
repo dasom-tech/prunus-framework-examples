@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="persistence.mybatis.mapper.tibero.PersistenceMybatisMapper">
+    <select id="selectAll" parameterType="persistence.mybatis.dto.LaptopDto" resultType="persistence.mybatis.entity.Laptop">
+        <include refid="select"></include>
+    </select>
+    <select id="selectPageList" parameterType="persistence.mybatis.dto.LaptopDto" resultType="persistence.mybatis.entity.Laptop">
+        <include refid="select"></include>
+    </select>
+    <select id="selectPage" parameterType="persistence.mybatis.dto.LaptopDto" resultType="persistence.mybatis.entity.Laptop">
+        <include refid="select"></include>
+    </select>
+    <sql id="select">
+        SELECT ID
+             , VENDOR
+             , DISPLAY_SIZE
+        FROM LAPTOP
+        WHERE VENDOR = #{vendor}
+    </sql>
+    <insert id="insert" parameterType="persistence.mybatis.entity.Laptop">
+        INSERT INTO LAPTOP ( ID
+                           , VENDOR
+                           , DISPLAY_SIZE
+                           , DELETED )
+                    VALUES ( LAPTOP_ID_SEQUENCE.NEXTVAL
+                           , #{vendor}
+                           , #{displaySize}
+                           , false )
+    </insert>
+    <update id="update" parameterType="persistence.mybatis.entity.Laptop">
+        UPDATE LAPTOP
+           SET VENDOR       = #{vendor}
+             , DISPLAY_SIZE = #{displaySize}
+         WHERE ID           = #{id}
+    </update>
+    <delete id="delete" parameterType="string">
+        UPDATE LAPTOP
+           SET DELETED = true
+         WHERE ID      = #{id}
+    </delete>
+    <insert id="merge" parameterType="persistence.mybatis.entity.Laptop">
+        MERGE INTO LAPTOP T
+        USING ( SELECT #{id} ID
+                     , #{vendor} VENDOR
+                     , #{displaySize} DISPLAY_SIZE
+                     , #{deleted} DELETED
+                  FROM DUAL ) D
+           ON ( T.ID = D.ID )
+        WHEN MATCHED THEN
+            UPDATE SET T.VENDOR       = D.VENDOR
+                     , T.DISPLAY_SIZE = D.DISPLAY_SIZE
+                     , T.DELETED      = D.DELETED
+        WHEN NOT MATCHED THEN
+            INSERT ( T.ID
+                   , T.VENDOR
+                   , T.DISPLAY_SIZE
+                   , T.DELETED )
+            VALUES ( LAPTOP_ID_SEQUENCE.NEXTVAL
+                   , D.VENDOR
+                   , D.DISPLAY_SIZE
+                   , D.DELETED )
+    </insert>
+</mapper>

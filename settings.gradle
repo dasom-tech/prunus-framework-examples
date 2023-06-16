@@ -19,3 +19,6 @@ pluginManagement {
 rootProject.name = 'prunus-framework-examples'
 
 include 'prunus-fileupload-example'
+include 'prunus-nexacro-adaptor-example'
+include 'prunus-persistence-jpa-example'
+include 'prunus-persistence-mybatis-example'

@@ -1,0 +1,12 @@
+spring:
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+prunus:
+  nexacro:
+    adaptor:
+      argument-resolver:
+        enabled: true
+      message-converter:
+        enabled: true
