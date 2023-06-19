@@ -29,6 +29,27 @@ PRUNUS_FILE_BUCKET
 |MODIFIED_DATE|수정일시|DATETIME| | |Audit 컬럼|
 |MODIFIED_REMOTE_ADDR|수정자 아이피|VARCHAR2(30)| | |Audit 컬럼|
 
+```sql
+CREATE TABLE PRUNUS_FILE_BUCKET (
+    FILE_BUCKET_ID VARCHAR2(36),
+    BACK_NUMBER VARCHAR2(8),
+    ORIGINAL_FILENAME VARCHAR2(100) NOT NULL,
+    CHANGED_FILENAME VARCHAR2(36) NOT NULL,
+    EXTENSION VARCHAR2(20),
+    SIZE BIGINT NOT NULL,
+    LOCATION VARCHAR2(200) NOT NULL,
+    DELETED BOOLEAN NOT NULL,
+    CREATED_BY VARCHAR2(30),
+    CREATED_DATE DATETIME,
+    CREATED_REMOTE_ADDR VARCHAR2(30),
+    MODIFIED_BY VARCHAR2(30),
+    MODIFIED_DATE DATETIME,
+    MODIFIED_REMOTE_ADDR VARCHAR2(30),
+
+    PRIMARY KEY (FILE_BUCKET_ID, BACK_NUMBER)
+);
+```
+
 ## Features
 * 단일 및 멀티 파일 업로드
 * 파일 다운로드 및 멀티 파일 zip 압축 파일 다운로드
@@ -83,8 +104,7 @@ spring:
 업로드된 파일을 조회합니다.
 
 #### 업로드 파일 삭제 (단건 및 멀티)- DELETE: /files/{id}/{backNumbers}   
-업로드 파일의 삭제 요청 API 로 Method **DELETE** 메서드로 API 를 요청해야 합니다.   
-삭제 하고자 하는 파일의 id, backnumber 를 URL 경로에 넣고 요청합니다.   
+업로드 파일의 삭제 요청 API 로 HTTP Method **DELETE** 로 API 를 요청해야 합니다. 삭제 하고자 하는 파일의 id, backnumber 를 URL 경로에 넣고 요청합니다.   
 
 즉, 위 업로드 후 응답으로 받은 메지시로 삭제한다고 가정할 때 `files/d937a225-6c10-4dd3-a2d0-b9f8a9c149f2/zUmndFbT`
 와 같은 형태로 API 요청하면 됩니다.   
