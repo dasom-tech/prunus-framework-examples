@@ -1,0 +1,210 @@
+{
+	"info": {
+		"_postman_id": "9f95839f-9319-4bf3-93a7-d29753a138f9",
+		"name": "prunus-fileupload",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2459687",
+		"_collection_link": "https://blue-eclipse-2818-1.postman.co/workspace/prunus-framework~db052546-f13e-48ce-9d15-22a9ff4c1b5d/collection/2459687-9f95839f-9319-4bf3-93a7-d29753a138f9?action=share&creator=2459687&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "업로드",
+			"item": [
+				{
+					"name": "파일 업로드",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"contentType": "",
+									"type": "file",
+									"src": "/Users/yongsang/Development/workspace/java/prunus-framework/prunus-fileupload/src/test/resources/NewJeans.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/files",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"files"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "파일 업로드 (기존 ID 에 추가)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/yongsang/Development/workspace/java/prunus-framework/prunus-fileupload/src/test/resources/BlackPink.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/files/cd032445-1b6f-4ba2-bc0e-2415e3b68948",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"files",
+								"cd032445-1b6f-4ba2-bc0e-2415e3b68948"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "업로드 파일 조회",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/files/cd032445-1b6f-4ba2-bc0e-2415e3b68948",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"files",
+								"cd032445-1b6f-4ba2-bc0e-2415e3b68948"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "업로드 파일 삭제 (단건 및 멀티)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/files/f0edf382-7f7f-4bea-9b7f-42e937bc43f5/ibZ0VAZo,MSklBSaS",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"files",
+								"f0edf382-7f7f-4bea-9b7f-42e937bc43f5",
+								"ibZ0VAZo,MSklBSaS"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "업로드 파일 삭제 (전체)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/files/f2b106a6-f551-4a54-9baf-d70138b578b7",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"files",
+								"f2b106a6-f551-4a54-9baf-d70138b578b7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "다운로드",
+			"item": [
+				{
+					"name": "업로드 파일 다운로드 (단건)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/files/66d047c0-2424-4d9d-881d-e00df1db32f0/ecLRwuV_/download",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"files",
+								"66d047c0-2424-4d9d-881d-e00df1db32f0",
+								"ecLRwuV_",
+								"download"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "업로드 파일 다운로드 (멀티)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/files/66d047cd032445-1b6f-4ba2-bc0e-2415e3b68948/l2IYFVQG,ENBffh3q/download?filename=xxx.zip",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"files",
+								"66d047cd032445-1b6f-4ba2-bc0e-2415e3b68948",
+								"l2IYFVQG,ENBffh3q",
+								"download"
+							],
+							"query": [
+								{
+									"key": "filename",
+									"value": "xxx.zip"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "업로드 파일 다운로드 (전체)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/files/66d047cd032445-1b6f-4ba2-bc0e-2415e3b68948/download",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"files",
+								"66d047cd032445-1b6f-4ba2-bc0e-2415e3b68948",
+								"download"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

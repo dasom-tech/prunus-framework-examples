@@ -1,4 +1,8 @@
 
 dependencies {
     implementation 'sdcit.prunus:prunus-fileupload'
+//    implementation files('/Users/yongsang/Development/workspace/java/prunus-framework/prunus-fileupload/build/classes/java/main')
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    runtimeOnly 'com.h2database:h2'
 }
