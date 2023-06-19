@@ -272,6 +272,22 @@ public class FileUploadEvent {
 }
 ```
 
+## 주의 사항
+### @RestControllerAdvice
+`prunus-fileupload` 에는 파일 업로드 시 에러를 처리하는 `@RestControllerAdvice` 가 있습니다. 
+이 `@RestControllerAdvice` 는 `MaxUploadSizeExceededException`, `FileIOException` 에러를 처리합니다.
+만약 `prunus-fileupload` 가 처리하는 예외(MaxUploadSizeExceededException, FileIOException)를 프로젝트 내부에서 다른 방식으로 처리하고자 원한다면
+사용자 정의 `@RestControllerAdvice` 생성하고 `@Order` Annotation 으로 `Ordered.LOWEST_PRECEDENCE` 보다 작은
+수를 정의하여 `prunus-fileupload` 의 `@RestControllerAdvice` 보다 우선 순위를 높여 먼저 처리되게 할 수 있습니다. 
+이렇게 하면 기본 에러 처리대신 사용자 정의 에러 처리가 가능합니다.
+
+### Transaction 및 Garbage files
+`prunus-fileupload` 의 파일 업로드는 특정 비즈니스 프로세스와는 별개로 동작하게 됩니다.
+즉, 특정 업무의 데이터가 저장되기 전 파일부터 업로드가 된 후 업무 데이터가 저장될 때 에러가 발생한다면 업로드된 파일은 
+자신을 관리해줄 데이터가 없게되어 Garbage 파일로 남게됩니다. 
+이렇게 Garbage 파일을 남기지 않기 위해서는 파일 업로드 시 응답으로 받은 Key 값을 잘 보관하고 있다가 업무 데이터 저장 실패 시
+**보상 트랜잭션(업로드 파일 삭제 API 호출하여 업로드된 파일 삭제) 을 발생시켜 Garbage 파일이 남지 않도록 개발하는 것을 권장합니다.**
+
 ## Test Client
 `prunus-fileupload` 의 파일 업로드, 다운로드를 테스트하기 위해서는 다음 절차를 통해 테스트 해 볼 수 있습니다.
 * `prunus-fileupload-example` 을 실행합니다.
