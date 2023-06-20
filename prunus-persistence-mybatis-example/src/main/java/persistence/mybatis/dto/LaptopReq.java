@@ -1,11 +1,13 @@
 package persistence.mybatis.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import prunus.persistence.data.pagination.Pagination;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class LaptopReq extends Pagination {
     private long id;
 

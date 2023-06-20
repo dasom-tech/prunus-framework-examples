@@ -1,7 +1,9 @@
 package persistence.mybatis.controller.h2;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import persistence.mybatis.dto.Equipment;
 import persistence.mybatis.dto.LaptopDto;
 import persistence.mybatis.dto.LaptopReq;
 import persistence.mybatis.service.h2.PersistenceMybatisService;
@@ -25,12 +27,12 @@ public class PersistenceMybatisController {
     }
 
     @GetMapping("/pageable/pagelist")
-    public List<LaptopDto> getPageablePageList(LaptopReq laptopReq, Pagination pageable) {
+    public List<LaptopDto> getPageablePageList(LaptopReq laptopReq, Pageable pageable) {
         return service.getPageablePageList(laptopReq, pageable);
     }
 
     @GetMapping("/pageable/page")
-    public Page<LaptopDto> getPageablePage(LaptopReq laptopReq, Pagination pageable) {
+    public Page<LaptopDto> getPageablePage(LaptopReq laptopReq, Pageable pageable) {
         return service.getPage(laptopReq, pageable);
     }
 
@@ -38,6 +40,14 @@ public class PersistenceMybatisController {
     public Page<LaptopDto> getPage(LaptopReq laptopReq) {
         return service.getPage(laptopReq, laptopReq.pageable());
     }
+
+    @PostMapping("/post/page")
+    public Page<LaptopDto> getPageByPostMethod(@RequestBody Equipment equipment) {
+        LaptopReq laptopReq = LaptopReq.builder().vendor(equipment.getVendor()).build();
+        Pageable pageable = equipment.getPagination().pageable();
+        return service.getPage(laptopReq, pageable);
+    }
+
 
     @PostMapping
     public void add(@RequestBody LaptopDto laptopDto) {
@@ -52,10 +62,5 @@ public class PersistenceMybatisController {
     @DeleteMapping("/{id}")
     public void remove(@PathVariable String id) {
         service.remove(id);
-    }
-
-    @PostMapping("/merge")
-    public void merge(@RequestBody LaptopDto laptopDto) {
-        service.merge(laptopDto);
     }
 }

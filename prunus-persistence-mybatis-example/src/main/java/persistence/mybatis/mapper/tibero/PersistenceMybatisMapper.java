@@ -22,6 +22,4 @@ public interface PersistenceMybatisMapper {
     void update(Laptop laptop);
 
     void delete(String id);
-
-    void merge(Laptop laptop);
 }

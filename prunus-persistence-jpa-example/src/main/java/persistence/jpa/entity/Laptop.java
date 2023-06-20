@@ -30,4 +30,8 @@ public class Laptop extends AuditEntity {
         this.vendor = vendor;
         this.displaySize = displaySize;
     }
+
+    public void updateDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
 }

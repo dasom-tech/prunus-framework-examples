@@ -15,8 +15,10 @@
         SELECT ID
              , VENDOR
              , DISPLAY_SIZE
-        FROM LAPTOP
-        WHERE VENDOR = #{vendor}
+             , DELETED
+          FROM LAPTOP
+         WHERE VENDOR = #{vendor}
+           AND DELETED = 0
     </sql>
     <insert id="insert" parameterType="persistence.mybatis.entity.Laptop">
         INSERT INTO LAPTOP ( ID
@@ -26,7 +28,7 @@
                     VALUES ( LAPTOP_ID_SEQUENCE.NEXTVAL
                            , #{vendor}
                            , #{displaySize}
-                           , false )
+                           , 0 )
     </insert>
     <update id="update" parameterType="persistence.mybatis.entity.Laptop">
         UPDATE LAPTOP
@@ -36,29 +38,7 @@
     </update>
     <delete id="delete" parameterType="string">
         UPDATE LAPTOP
-           SET DELETED = true
+           SET DELETED = 0
          WHERE ID      = #{id}
     </delete>
-    <insert id="merge" parameterType="persistence.mybatis.entity.Laptop">
-        MERGE INTO LAPTOP T
-        USING ( SELECT #{id} ID
-                     , #{vendor} VENDOR
-                     , #{displaySize} DISPLAY_SIZE
-                     , #{deleted} DELETED
-                  FROM DUAL ) D
-           ON ( T.ID = D.ID )
-        WHEN MATCHED THEN
-            UPDATE SET T.VENDOR       = D.VENDOR
-                     , T.DISPLAY_SIZE = D.DISPLAY_SIZE
-                     , T.DELETED      = D.DELETED
-        WHEN NOT MATCHED THEN
-            INSERT ( T.ID
-                   , T.VENDOR
-                   , T.DISPLAY_SIZE
-                   , T.DELETED )
-            VALUES ( LAPTOP_ID_SEQUENCE.NEXTVAL
-                   , D.VENDOR
-                   , D.DISPLAY_SIZE
-                   , D.DELETED )
-    </insert>
 </mapper>

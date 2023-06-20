@@ -61,14 +61,4 @@ public class PersistenceMybatisService {
         DataSourceNameContextHolder.set("tibero");
         mapper.delete(id);
     }
-
-    public void merge(LaptopDto laptopDto) {
-        DataSourceNameContextHolder.set("tibero");
-        Laptop laptop = Laptop.builder()
-                .id(laptopDto.getId())
-                .vendor(laptopDto.getVendor())
-                .displaySize(laptopDto.getDisplaySize())
-                .build();
-        mapper.merge(laptop);
-    }
 }

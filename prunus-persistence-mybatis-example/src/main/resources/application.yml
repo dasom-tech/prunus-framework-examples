@@ -27,7 +27,7 @@ prunus:
   persistence:
     data:
       audit:
-        modify-on-create: false
+        modify-on-create: true
     mybatis:
       audit.enabled: true
       pagination.enabled: true

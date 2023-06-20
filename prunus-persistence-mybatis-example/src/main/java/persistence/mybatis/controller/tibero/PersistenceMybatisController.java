@@ -47,9 +47,4 @@ public class PersistenceMybatisController {
     public void remove(@PathVariable String id) {
         service.remove(id);
     }
-
-    @PostMapping("/merge")
-    public void merge(@RequestBody LaptopDto laptopDto) {
-        service.merge(laptopDto);
-    }
 }

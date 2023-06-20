@@ -15,8 +15,10 @@
         SELECT ID
              , VENDOR
              , DISPLAY_SIZE
-        FROM LAPTOP
-        WHERE VENDOR = #{vendor}
+             , DELETED
+          FROM LAPTOP
+         WHERE VENDOR = #{vendor}
+           AND DELETED = false
     </sql>
     <insert id="insert" parameterType="persistence.mybatis.entity.Laptop">
         INSERT INTO LAPTOP ( ID
@@ -39,14 +41,4 @@
            SET DELETED = true
          WHERE ID      = #{id}
     </delete>
-    <insert id="merge" parameterType="persistence.mybatis.entity.Laptop">
-        MERGE INTO LAPTOP ( ID
-                          , VENDOR
-                          , DISPLAY_SIZE
-                          , DELETED )
-                   VALUES ( #{id}
-                          , #{vendor}
-                          , #{displaySize}
-                          , false )
-    </insert>
 </mapper>

@@ -51,7 +51,8 @@ public class JpaService {
     }
 
     public void remove(long id) throws Exception {
-        if(!repository.existsById(id)) throw new Exception("not found");
-        repository.deleteById(id);
+        Laptop laptop = repository.findById(id).orElseThrow(() -> new Exception("not found"));
+        laptop.updateDeleted(Boolean.TRUE);
+        repository.save(laptop);
     }
 }

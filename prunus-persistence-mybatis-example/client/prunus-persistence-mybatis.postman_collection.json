@@ -1,0 +1,273 @@
+{
+	"info": {
+		"_postman_id": "f4cbc9fc-2f46-48d0-ade2-cb4ff72f9856",
+		"name": "prunus-persistence-mybatis",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4980272",
+		"_collection_link": "https://blue-eclipse-2818-1.postman.co/workspace/prunus~ad437c9f-3a83-4cb2-a3b5-c0bcef1983e2/collection/4980272-f4cbc9fc-2f46-48d0-ade2-cb4ff72f9856?action=share&creator=4980272&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "전체범위 조회",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/h2?vendor=lg",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"h2"
+					],
+					"query": [
+						{
+							"key": "vendor",
+							"value": "lg"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "부분범위 조회 / 목록 반환",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/h2/pageable/pagelist?vendor=lg&page=1&size=10&sort=id,ASC&sort=displaySize,ASC",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"h2",
+						"pageable",
+						"pagelist"
+					],
+					"query": [
+						{
+							"key": "vendor",
+							"value": "lg"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "10"
+						},
+						{
+							"key": "sort",
+							"value": "id,ASC"
+						},
+						{
+							"key": "sort",
+							"value": "displaySize,ASC"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "부분범위 조회 / Pagination 정보 반환",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/h2/pageable/page?vendor=lg&page=1&size=10&sort=id,ASC&sort=displaySize,ASC",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"h2",
+						"pageable",
+						"page"
+					],
+					"query": [
+						{
+							"key": "vendor",
+							"value": "lg"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "10"
+						},
+						{
+							"key": "sort",
+							"value": "id,ASC"
+						},
+						{
+							"key": "sort",
+							"value": "displaySize,ASC"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "부분범위 조회 / Pagination 정보 반환 / 단일 DTO 구성",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/h2/dto/page?vendor=lg&page=1&size=10&sort=id,ASC&sort=displaySize,ASC",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"h2",
+						"dto",
+						"page"
+					],
+					"query": [
+						{
+							"key": "vendor",
+							"value": "lg"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "10"
+						},
+						{
+							"key": "sort",
+							"value": "id,ASC"
+						},
+						{
+							"key": "sort",
+							"value": "displaySize,ASC"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "부분범위 조회 / Pagination 정보 반환 / POST Body 구성",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"vendor\": \"lg\",\n  \"pagination\": {\n    \"page\": 1,\n    \"size\": 10,\n    \"sort\": \"['id,ASC','displaySize,ASC']\"\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/h2/post/page",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"h2",
+						"post",
+						"page"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Audit 정보 추가 / 정보 등록",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"vendor\": \"lg\",\n  \"displaySize\": 15\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/h2/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"h2",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Audit 정보 추가 / 정보 수정",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": 101,\n  \"vendor\": \"samsung\",\n  \"displaySize\": 17\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/h2/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"h2",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Audit 정보 추가 / 정보 삭제 처리",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/h2/101",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"h2",
+						"101"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
