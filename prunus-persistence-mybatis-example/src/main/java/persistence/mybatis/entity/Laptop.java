@@ -4,13 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import prunus.persistence.data.audit.entity.AuditableEntity;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Builder
-public class Laptop extends AuditableEntity {
+@NoArgsConstructor
+@AllArgsConstructor
+public class Laptop extends AuditEntity {
 
     private long id;
 
@@ -18,5 +17,5 @@ public class Laptop extends AuditableEntity {
 
     private int displaySize;
 
-    private boolean deleted;
+    private Boolean deleted;
 }

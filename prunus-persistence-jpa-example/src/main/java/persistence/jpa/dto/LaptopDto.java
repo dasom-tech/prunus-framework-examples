@@ -1,6 +1,5 @@
 package persistence.jpa.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import persistence.jpa.entity.Laptop;
 
@@ -16,15 +15,23 @@ public class LaptopDto {
 
     private int displaySize;
 
-    @JsonIgnore
-    private boolean deleted;
+    private Boolean deleted;
 
     public static LaptopDto of(Laptop laptop) {
         return LaptopDto.builder()
                 .id(laptop.getId())
                 .vendor(laptop.getVendor())
                 .displaySize(laptop.getDisplaySize())
-                .deleted(laptop.isDeleted())
+                .deleted(laptop.getDeleted())
+                .build();
+    }
+
+    public Laptop toEntity() {
+        return Laptop.builder()
+                .id(getId())
+                .vendor(getVendor())
+                .displaySize(getDisplaySize())
+                .deleted(getDeleted())
                 .build();
     }
 }

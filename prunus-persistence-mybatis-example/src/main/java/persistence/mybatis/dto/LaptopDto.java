@@ -9,7 +9,6 @@ import persistence.mybatis.entity.Laptop;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class LaptopDto {
     private long id;
 
@@ -25,7 +24,7 @@ public class LaptopDto {
                 .id(laptop.getId())
                 .vendor(laptop.getVendor())
                 .displaySize(laptop.getDisplaySize())
-                .deleted(laptop.isDeleted())
+                .deleted(laptop.getDeleted())
                 .build();
     }
 }

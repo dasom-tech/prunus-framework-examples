@@ -2,8 +2,8 @@ package persistence.jpa;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import persistence.jpa.dto.LaptopDto;
 
 import java.util.List;
@@ -30,5 +30,21 @@ public class JpaController {
     @GetMapping("/page")
     public Page<LaptopDto> getPage(LaptopDto laptopDto, Pageable pageable) {
         return service.getPage(laptopDto, pageable);
+    }
+
+    @PostMapping
+    public LaptopDto add(@RequestBody LaptopDto laptopDto) throws Exception {
+        return service.add(laptopDto);
+    }
+
+    @PutMapping
+    public LaptopDto modify(@RequestBody LaptopDto laptopDto) throws Exception {
+        return service.modify(laptopDto);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void remove(@PathVariable long id) throws Exception {
+        service.remove(id);
     }
 }

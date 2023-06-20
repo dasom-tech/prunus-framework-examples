@@ -1,45 +1,36 @@
 spring:
-
-  sql:
-    init:
-      mode: embedded # always, embedded, never
-
-  h2:
-    console:
-      enabled: true
-      settings:
-        web-allow-others: true
-
-  datasource:
-    hikari:
-      h2:
-        driver-class-name: org.h2.Driver
-        jdbc-url: jdbc:h2:mem:prunus
-        username: sa
-        password:
-      tibero:
-        driver-class-name: com.tmax.tibero.jdbc.TbDriver
-        jdbc-url: jdbc:tibero:thin:@192.168.0.40:8629:tibero
-        username: sys
-        password: tibero
-
-  data:
-    web:
-      pageable:
-        default-page-size: 10
-
+  sql.init.mode: embedded # always, embedded, never
+  h2.console:
+    enabled: true
+    settings:
+      web-allow-others: true
+  datasource.hikari:
+    h2:
+      driver-class-name: org.h2.Driver
+      jdbc-url: jdbc:h2:mem:prunus
+      username: sa
+      password:
+    tibero:
+      driver-class-name: com.tmax.tibero.jdbc.TbDriver
+      jdbc-url: jdbc:tibero:thin:@192.168.0.40:8629:tibero
+      username: sys
+      password: tibero
+  data.web.pageable:
+    default-page-size: 10
+    one-indexed-parameters: true # page number 를 '1'부터 시작한다. (default : false, start at 0)
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
   mapper-locations:
     - classpath*:mapper/**/*.xml
-
 prunus:
   persistence:
-    mybatis:
+    data:
       audit:
-        enabled: true
-      pagination:
-        enabled: true
+        modify-on-create: false
+    mybatis:
+      audit.enabled: true
+      pagination.enabled: true
+
 
 

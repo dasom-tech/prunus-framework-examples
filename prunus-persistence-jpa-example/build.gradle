@@ -1,5 +1,4 @@
 dependencies {
     implementation 'sdcit.prunus:prunus-persistence-jpa'
-//    implementation files('/Users/oopist/Projects/prunus-framework/prunus-persistence-jpa/build/classes/java/main')
     runtimeOnly 'com.h2database:h2'
 }

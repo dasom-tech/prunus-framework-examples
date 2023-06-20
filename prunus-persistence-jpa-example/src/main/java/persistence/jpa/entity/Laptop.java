@@ -1,17 +1,17 @@
 package persistence.jpa.entity;
 
 import lombok.*;
-import prunus.persistence.data.audit.entity.AuditableEntity;
 
 import javax.persistence.*;
 
-@Entity(name="LAPTOP")
-@SequenceGenerator(name = "ID_GENERATOR", sequenceName = "LAPTOP_ID_SEQUENCE", initialValue = 1, allocationSize = 1)
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Builder
-public class Laptop extends AuditableEntity {
+@Entity(name="LAPTOP")
+@SequenceGenerator(name = "ID_GENERATOR", sequenceName = "LAPTOP_ID_SEQUENCE", initialValue = 1, allocationSize = 1)
+public class Laptop extends AuditEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ID_GENERATOR")
     private long id;
@@ -24,5 +24,10 @@ public class Laptop extends AuditableEntity {
 
     @Column(nullable = false)
     @Setter
-    private boolean deleted;
+    private Boolean deleted;
+
+    public void updateSpec(String vendor, int displaySize) {
+        this.vendor = vendor;
+        this.displaySize = displaySize;
+    }
 }

@@ -7,7 +7,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Repository;
 import persistence.mybatis.datasource.DataSourceConfig;
 import persistence.mybatis.datasource.HikariDataSourceConfig;
-import persistence.mybatis.provider.UserAuditingSubjectProvider;
+import persistence.mybatis.provider.AuditingUserDeptProvider;
+import persistence.mybatis.provider.AuditingUserSubjectProvider;
 import prunus.persistence.data.audit.provider.AuditingAware;
 
 import static prunus.persistence.data.audit.provider.AuditProviderSupport.SUBJECT_PROVIDER_BEAN_NAME;
@@ -18,7 +19,12 @@ import static prunus.persistence.data.audit.provider.AuditProviderSupport.SUBJEC
 public class MybatisConfiguration {
 
     @Bean(SUBJECT_PROVIDER_BEAN_NAME)
-    public AuditingAware<String> auditingSubjectProvider() {
-        return new UserAuditingSubjectProvider();
+    public AuditingAware<String> auditingUserSubjectProvider() {
+        return new AuditingUserSubjectProvider();
+    }
+
+    @Bean("auditingDeptProvider")
+    public AuditingAware<String> auditingUserDeptProvider() {
+        return new AuditingUserDeptProvider();
     }
 }
