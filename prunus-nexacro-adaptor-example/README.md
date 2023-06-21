@@ -213,7 +213,7 @@ http-request 으로 요청된 정보는 Controller method 에 선언된 argument
 
 ## MethodArgumentResolver
 
-- @Variable   
+- @VariableParam   
   비 집합 개념의 단일 값을 전송 받을 경우 사용하며, `name` 속성에 따라 클라이언트에서 전송된 전문의 해당 값으로 받아옵니다.   
   속성은 다음과 같은 사항으로 사용합니다.
 
@@ -222,7 +222,7 @@ http-request 으로 요청된 정보는 Controller method 에 선언된 argument
   |name or value|지정된 값에 대응하는 클라이언트 전문의 값을 판별 합니다.|없음|O|
   |required|클라이언트로 부터 전달된 전문의 값의 필수 여부를 지정합니다.|true|X|
 
-- @DataSet   
+- @DataSetParam   
   집합 개념의 값을 전송 받을 경우 사용하며, 속성 값은 @Variable 과 사용법이 동일 합니다.   
   값이 목록형으로 전송되었다 하더라도, argument type 이 단일 객체 타입으로 선언되어 있을 경우 단일 객체 타입으로 자동으로 받아집니다.   
   부분범위 조회를 위한 정보를 수신하기 위해서는 `Pagination` class type 의 argument 를 선언하여 사용 합니다.   

@@ -1,6 +1,6 @@
-# prunus-persistence-mybatis
-`prunus-persistence-mybatis` 는 데이타를 생성 또는 수정할 경우 행위 정보를 자동으로 저장해주는 audit 기능과, 대용량 데이타를 부분범위로 조회하는 pagination 기능을 제공합니다.
-이러한 기능은 `prunus-persistence-data` 를 공통으로 사용하며, 따라서 `prunus-persistence-jpa` 도 동일한 기능으로 동작합니다.
+# prunus-persistence-jpa
+`prunus-persistence-jpa` 는 데이타를 생성 또는 수정할 경우 행위 정보를 자동으로 저장해주는 audit 기능과, 대용량 데이타를 부분범위로 조회하는 pagination 기능을 제공합니다.
+이러한 기능은 `prunus-persistence-data` 를 공통으로 사용하며, 따라서 `prunus-persistence-mybatis` 도 동일한 기능으로 동작합니다.
 
 ## Audit
 
@@ -11,6 +11,7 @@
 ```java
 @Getter
 @Setter
+@MappedSuperclass
 @EntityListeners({AuditingTrailListener.class})
 public abstract class AuditableEntity implements Auditable {
 
@@ -50,16 +51,17 @@ audit field 에 해당하는 DB TABLE COLUMN 이 다음과 같이 지정되었�
 
 |구분|field|column|
 |---|---|---|
-|생성|createdBy|CRE_USER|
-|생성|createdDate|CRE_DATE|
-|생성|createdRemoteAddr|CRE_ADDR|
-|수정|modifiedBy|MOD_USER|
-|수정|modifiedDate|MOD_DATE|
-|수정|modifiedRemoteAddr|MOD_ADDR|
+|생성|createdBy|CREATED_BY|
+|생성|createdDate|CREATED_DATE|
+|생성|createdRemoteAddr|CREATED_REMOTE_ADDR|
+|수정|modifiedBy|MODIFIED_BY|
+|수정|modifiedDate|MODIFIED_DATE|
+|수정|modifiedRemoteAddr|MODIFIED_REMOTE_ADDR|
 
 audit field <--> db column 정보는 `@AttributeOverrides` 어노테이션을 사용하여 정의하며,
 다음과 같은 `AuditEntity`처럼 별도의 중간 단계의 상위 클래스를 생성하여 사용하고자 하는 entity class 에서 상속 받아 사용합니다.
 ```java
+@MappedSuperclass
 @AttributeOverrides({
         @AttributeOverride(name="createdBy", column=@Column(name="CRE_USER")),
         @AttributeOverride(name="createdDate", column=@Column(name="CRE_DATE")),
@@ -71,31 +73,52 @@ audit field <--> db column 정보는 `@AttributeOverrides` 어노테이션을 �
 public class AuditEntity extends AuditableEntity {
 }
 ```
+
 ```java
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity(name="LAPTOP")
+@SequenceGenerator(name = "ID_GENERATOR", sequenceName = "LAPTOP_ID_SEQUENCE", initialValue = 1, allocationSize = 1)
 public class Laptop extends AuditEntity {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ID_GENERATOR")
     private long id;
+  
+    @Column(length = 100, nullable = false)
     private String vendor;
+  
+    @Column(nullable = false)
     private int displaySize;
-    private boolean deleted;
+  
+    @Column(nullable = false)
+    @Setter
+    private Boolean deleted;
+  
+    public void updateSpec(String vendor, int displaySize) {
+        this.vendor = vendor;
+        this.displaySize = displaySize;
+    }
+  
+    public void updateDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
 }
 ```
 
 ### 기본 제공 audit field 의 부분 사용
 만약 기본 제공되는 `modifiedRemoteAddr` 를 사용하지 않고자 한다면, `@AttributeOverrides` 어노테이션의 정의에서 해당 컬럼정보를 제외하여 사용합니다.
 ```java
+@MappedSuperclass
 @AttributeOverrides({
-        @AttributeOverride(name="createdBy", column=@Column(name="CRE_USER")),
-        @AttributeOverride(name="createdDate", column=@Column(name="CRE_DATE")),
-        /* @AttributeOverride(name="createdRemoteAddr", column=@Column(name="CRE_ADDR")), */ // 제외
-        @AttributeOverride(name="modifiedBy", column=@Column(name="MOD_USER")),
-        @AttributeOverride(name="modifiedDate", column=@Column(name="MOD_DATE"))
-        /* @AttributeOverride(name="modifiedRemoteAddr", column=@Column(name="MOD_ADDR")) */ // 제외
+        @AttributeOverride(name="createdBy", column=@Column(name="CREATED_BY")),
+        @AttributeOverride(name="createdDate", column=@Column(name="CREATED_DATE")),
+        /* @AttributeOverride(name="createdRemoteAddr", column=@Column(name="CREATED_REMOTE_ADDR")), */ // 제외
+        @AttributeOverride(name="modifiedBy", column=@Column(name="MODIFIED_BY")),
+        @AttributeOverride(name="modifiedDate", column=@Column(name="MODIFIED_DATE"))
+        /* @AttributeOverride(name="modifiedRemoteAddr", column=@Column(name="MODIFIED_REMOTE_ADDR")) */ // 제외
 })
 public class AuditEntity extends AuditableEntity {
 }
@@ -154,6 +177,7 @@ public @interface UpdateDept {
 ```java
 @Getter
 @Setter
+@MappedSuperclass
 @AttributeOverrides({
         @AttributeOverride(name="createdBy", column=@Column(name="CRE_USER")),
         @AttributeOverride(name="createdDate", column=@Column(name="CRE_DATE")),
@@ -165,13 +189,13 @@ public class AuditEntity extends AuditableEntity {
     // "생성" field를 정의합니다.
     // 추가된 @PersistDept 어노테이션을 선언하며, DB COLUMN 명칭을 추가 합니다.
     @PersistDept
-    @Column(name="CRE_DEPT")
+    @Column(name="CREATED_DEPT")
     private String createDept;
 
     // "수정" field를 정의합니다.
     // 추가된 @UpdateDept 어노테이션을 선언하며, DB COLUMN 명칭을 추가 합니다.
     @UpdateDept
-    @Column(name="MOD_DEPT")
+    @Column(name="MODIFIED_DEPT")
     private String updateDept;
 }
 ```
@@ -201,14 +225,12 @@ public class MybatisConfiguration {
 ### Properties
 |이름|설명|기본값|
 |---|---|---|
-|prunus.persistence.mybatis.audit.enabled| audit 기능 사용 여부|true|
 |prunus.persistence.data.audit.modify-on-create| 데이터 추가 시에 추가항목 외에 수정 항목도 기록할지 여부|false|
 
 ## Pagination
-mybatis 를 사용하여 대용량 데이터를 부분범위로 조회할 경우, 일반적으로 조회 SQL 을 기반으로 가공하여 사용하게 됩니다.
-또한, DB 가 변경되었거나 이기종의 DB 를 동시에 사용시 처리 사항의 복잡도가 증가 합니다.   
-이런 문제점을 해결하고자, pagination 정보를 요청할 경우는 일반 조회를 부분범위 조회로 변경하여 동작하는 기능과,
-각각의 DB 에 대응하는 부분범위 SQL 으로 적용하여 동작하는 Dialect 기능을 제공 합니다.
+JPA 는 `prunus-persistence-data` 을 기본으로 사용함으로서 부분범위 데이터 조회가 가능합니다.
+Controller method 의 argument 가 `Pageable` 타입으로 선언되어 있을 경우, `PageableHandlerMethodArgumentResolver` 가 동작하여 해당 정보를 주입 합니다.   
+하지만, GET method 방식의 Query Parameters 로 전달되었을 경우에 국한되며, `prunus-persistence-jpa` 는 POST method 방식의 Body 로 전달 방식을 지원 합니다.
 
 ### pagination 요청정보
 pagination 의 요청 정보는 다음과 같습니다.
@@ -238,7 +260,7 @@ pagination 의 요청 정보는 다음과 같습니다.
   따라서, 클라이언트에서 보내는 정보에 대응하는 메서드 파라미터(`LaptopReq`)와는 별도로, `Pageable` 인터페이스 타입으로 지정해야 합니다.
   ```java
   @GetMapping("/pageable/page")
-  public Page<LaptopDto> getPageablePage(LaptopReq laptopReq, Pageable pageable) {
+  public Page<LaptopDto> getPage(LaptopReq laptopReq, Pageable pageable) {
       return service.getPage(laptopReq, pageable);
   }
   ```
@@ -268,25 +290,25 @@ pagination 의 요청 정보는 다음과 같습니다.
       private boolean deleted;
   }
   ```
-  service 로 전달된 `Pageable` 객체는 mapper method 의 별도의 파라미터로 전달되어 pagination 기능이 동작하게 됩니다.
-  이때, `Pageable` 객체는 mapper method 파라미터의 순서에 무관하며, 별도의 파라미터로 mapper method 파라미터로 전달되어야 합니다.
+  service 로 전달된 `Pageable` 객체는 repository method 의 별도의 파라미터로 전달되어 pagination 기능이 동작하게 됩니다.
+  이때, `Pageable` 객체는 repository method 파라미터에서 두번째 순서로 전달되어야 합니다.
   - service method
   ```java
   public Page<LaptopDto> getPage(LaptopReq laptopReq, Pageable pageable) {
-      // 앞서 전달 받은 Pageable 을 별도의 파라미터로 전달 합니다.
-      Page<Laptop> laptops = mapper.selectPage(laptopReq, pageable);
+      // 앞서 전달 받은 Pageable 을 두번째 파라미터로 전달 합니다.
+      Page<Laptop> laptops = repository.findAllByVendorAndDeletedIsFalse(laptopReq.getVendor(), pageable);
       // 반환 타입이 Page<T> 일 경우 PageImpl 구현체를 사용하여 반환 합니다.
       return new PageImpl<>(laptops.stream().map(LaptopDto::of).collect(Collectors.toList()), pageable, laptops.getTotalElements());
   }
   ```
-  - mapper method
+  - repository method
   ```java
-  Page<Laptop> selectPage(LaptopReq laptopReq, Pageable pageable);
+  Page<Laptop> findAllByVendorAndDeletedIsFalse(String vendor, Pageable pageable);
   ```
-  다만, mapper method 의 반환 타입이 Page&lt;T&gt; 일 경우 pagination 정보를 포함하고 있는 객체로 반환하지만,
+  다만, repository method 의 반환 타입이 Page&lt;T&gt; 일 경우 pagination 정보를 포함하고 있는 객체로 반환하지만,
   단순 부분 조회 목록을 반환하고자 할 경우 List&lt;T&gt; 타입으로 선언하여 사용 합니다.
   ```java
-  List<Laptop> selectPageList(LaptopReq laptopReq, Pageable pageable);
+  List<Laptop> findAllByVendorAndDeletedIsFalse(String vendor, Pageable pageable);
   ```
 
 - `POST` Body
@@ -333,38 +355,6 @@ pagination 의 요청 정보는 다음과 같습니다.
       return service.getPage(laptopReq, pageable);
   }
   ```
-### Dialect
-DB 에 대응하는 dialect 목록은 다음과 같습니다.
-
-|DB|Dialect|
-|---|---|
-|H2|db2Dialect|
-|HSQL|hsqlDialect|
-|MySQL|mysqlDialect|
-|Oracle|oracleDialect|
-|PostgreSQL|postgresqlDialect|
-|SqlServer 2005|sqlserver2005Dialect|
-|SqlServer|sqlserverDialect|
-|Sybase|sybaseDialect|
-|Tibero|tiberoDialect|
-
-Dialect 는 spring bean 으로 등록되어 관리되며, 기본으로 제공되는 것 이외 Dialect 를 추가하고자 할 경우 다음과 같이 등록 합니다.
-- Dialect class 구현   
-  `com.github.miemiedev.mybatis.paginator.dialect.Dialect` 클래스를 상속받아서 `getLimitString` 메서드를 각 DB SQL 에 특화된 사항에 따라 구현 합니다.
-- Spring Bean 등록   
-  `prunus.persistence.mybatis.pagination.interceptor.PagingDialect` 객체의 Parameterized Type 으로 Dialect class 를 지정하여 bean 으로 등록합니다.   
-  단, bean 이름은 기존 Dialect 이름과 중복되지 않게 지정하도록 합니다.
-  ```java
-  @Bean
-  public PagingDialect db2Dialect() {
-    return new PagingDialect(DB2Dialect.class);
-  }
-  ```
-
-## Properties
-|이름|설명|기본값|
-|---|---|---|
-|prunus.persistence.mybatis.pagination.enabled|pagination 기능 사용 여부|true|
 
 pagination 의 기능은 `spring-data-commons` 을 사용함으로서, spring-jpa 에서 사용하는 기능과 동일하도록 구현되어 있습니다. 해당 설정을 그대로 이용합니다.
 
@@ -424,8 +414,8 @@ mapper method 의 반환 타입이 Page&lt;T&gt; 일 경우, pagination 정보�
 ```
 
 ## Test Client
-`prunus-persistence-mybatis` 의 audit, pagination 을 테스트하기 위해서는 다음 절차를 통해 테스트 해 볼 수 있습니다.
-* `prunus-persistence-mybatis-example` 을 실행합니다.
+`prunus-persistence-jpa` 의 audit, pagination 을 테스트하기 위해서는 다음 절차를 통해 테스트 해 볼 수 있습니다.
+* `prunus-persistence-jpa-example` 을 실행합니다.
   * 보통의 spring boot 의 application 실행 방법과 동일합니다. 
 * 본인의 환경에 맞는 [Postman](https://www.postman.com/downloads/) 을 다운로드 및 설치합니다.
-* **client** 디렉토리의 `prunus-persistence-mybatis.postman_collection.json` 파일을 Postman 에서 Import 하여 테스트 합니다.
+* **client** 디렉토리의 `prunus-persistence-jpa.postman_collection.json` 파일을 Postman 에서 Import 하여 테스트 합니다.
