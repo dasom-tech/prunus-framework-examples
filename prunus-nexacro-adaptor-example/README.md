@@ -218,9 +218,9 @@ http-request 으로 요청된 정보는 Controller method 에 선언된 argument
   속성은 다음과 같은 사항으로 사용합니다.
 
   |속성|설명|기본값|필수사용여부|
-    |---|---|---|:---:|
+  |---|---|---|:---:|
   |name or value|지정된 값에 대응하는 클라이언트 전문의 값을 판별 합니다.|없음|O|
-  |required|클라이언트에서 전문의 값의 필수 여부를 지정합니다.|true|X|
+  |required|클라이언트로 부터 전달된 전문의 값의 필수 여부를 지정합니다.|true|X|
 
 - @DataSet   
   집합 개념의 값을 전송 받을 경우 사용하며, 속성 값은 @Variable 과 사용법이 동일 합니다.   
@@ -238,16 +238,16 @@ http-request 으로 요청된 정보는 Controller method 에 선언된 argument
 @PostMapping("/resolver")
 public NexacroResult resolverNormal(
         // 단일 값이며, name 속성은 필수로 전달받아야 할 값이며, "id" 라는 명칭으로 판별 합니다. null 일 경우 예외를 발생합니다.
-        @Variable("id") String id,
-        @Variable("name") String name,
+        @VariableParam("id") String id,
+        @VariableParam("name") String name,
         // 단일 값이며, name 속성은 필수로 전달받아야 할 값이며, "seq" 라는 명칭으로 판별 합니다. null 일 경우를 허용합니다.
-        @Variable(name="seq", required = false) int seq,
+        @VariableParam(name="seq", required = false) int seq,
         // 집합 값이며, name 속성은 필수로 전달받아야 할 값이며, "laptops" 라는 명칭으로 판별 합니다. null 일 경우 예외를 발생합니다.
-        @DataSet("laptops") List<Laptop> laptops,
+        @DataSetParam("laptops") List<Laptop> laptops,
         // 집합 값이며, name 속성은 필수로 전달받아야 할 값이며, "ds_desktop" 라는 명칭으로 판별 합니다. null 일 경우를 허용합니다.
-        @DataSet(name="ds_desktop", required = false) Desktop desktop,
+        @DataSetParam(name="ds_desktop", required = false) Desktop desktop,
         // 집합 값의 사용법과 동일하며, 부분범위 조회를 위한 정보를 받아올 경우 Pagination 을 사용 합니다.
-        @DataSet("ds_paging") Pagination pagination) {
+        @DataSetParam("ds_paging") Pagination pagination) {
     Pageable pageable = pagination.pageable();
     Equipment equipment = service.getEquipment(id, name, seq, desktop, laptops, pageable);
     return NexacroResult.builder()
