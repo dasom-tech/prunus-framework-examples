@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import persistence.jpa.dto.LaptopDto;
+import persistence.jpa.dto.LaptopReq;
 import persistence.jpa.entity.Laptop;
 
 import java.util.List;
@@ -19,18 +20,21 @@ public class JpaService {
         this.repository = repository;
     }
 
-    public List<LaptopDto> getAll(LaptopDto laptopDto) {
-        List<Laptop> laptops = repository.findAllByVendorAndDeletedIsFalse(laptopDto.getVendor());
+    public List<LaptopDto> getAll(LaptopReq laptopReq) {
+        List<Laptop> laptops = repository.findAllByVendorAndDeletedIsFalse(laptopReq.getVendor());
         return laptops.stream().map(LaptopDto::of).collect(Collectors.toList());
     }
 
-    public List<LaptopDto> getPageList(LaptopDto laptopDto, Pageable pageable) {
-        Page<Laptop> laptops = repository.findAllByVendorAndDeletedIsFalse(laptopDto.getVendor(), pageable);
+    public List<LaptopDto>
+
+
+    getPageList(LaptopReq laptopReq, Pageable pageable) {
+        Page<Laptop> laptops = repository.findAllByVendorAndDeletedIsFalse(laptopReq.getVendor(), pageable);
         return laptops.stream().map(LaptopDto::of).collect(Collectors.toList());
     }
 
-    public Page<LaptopDto> getPage(LaptopDto laptopDto, Pageable pageable) {
-        Page<Laptop> laptops = repository.findAllByVendorAndDeletedIsFalse(laptopDto.getVendor(), pageable);
+    public Page<LaptopDto> getPage(LaptopReq laptopReq, Pageable pageable) {
+        Page<Laptop> laptops = repository.findAllByVendorAndDeletedIsFalse(laptopReq.getVendor(), pageable);
         return new PageImpl<>(laptops.stream().map(LaptopDto::of).collect(Collectors.toList()), pageable, laptops.getTotalElements());
     }
 

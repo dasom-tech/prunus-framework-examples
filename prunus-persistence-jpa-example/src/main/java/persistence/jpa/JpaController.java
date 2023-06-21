@@ -4,7 +4,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import persistence.jpa.dto.Equipment;
 import persistence.jpa.dto.LaptopDto;
+import persistence.jpa.dto.LaptopReq;
 
 import java.util.List;
 
@@ -18,18 +20,30 @@ public class JpaController {
     }
 
     @GetMapping
-    public List<LaptopDto> getAll(LaptopDto laptopDto) {
-        return service.getAll(laptopDto);
+    public List<LaptopDto> getAll(LaptopReq laptopReq) {
+        return service.getAll(laptopReq);
     }
 
-    @GetMapping("/pagelist")
-    public List<LaptopDto> getPageList(LaptopDto laptopDto, Pageable pageable) {
-        return service.getPageList(laptopDto, pageable);
+    @GetMapping("/pageable/pagelist")
+    public List<LaptopDto> getPageList(LaptopReq laptopReq, Pageable pageable) {
+        return service.getPageList(laptopReq, pageable);
     }
 
-    @GetMapping("/page")
-    public Page<LaptopDto> getPage(LaptopDto laptopDto, Pageable pageable) {
-        return service.getPage(laptopDto, pageable);
+    @GetMapping("/pageable/page")
+    public Page<LaptopDto> getPage(LaptopReq laptopReq, Pageable pageable) {
+        return service.getPage(laptopReq, pageable);
+    }
+
+    @GetMapping("/dto/page")
+    public Page<LaptopDto> getPage(LaptopReq laptopReq) {
+        return service.getPage(laptopReq, laptopReq.pageable());
+    }
+
+    @PostMapping("/post/page")
+    public Page<LaptopDto> getPageByPostMethod(@RequestBody Equipment equipment) {
+        LaptopReq laptopReq = LaptopReq.builder().vendor(equipment.getVendor()).build();
+        Pageable pageable = equipment.getPagination().pageable();
+        return service.getPage(laptopReq, pageable);
     }
 
     @PostMapping

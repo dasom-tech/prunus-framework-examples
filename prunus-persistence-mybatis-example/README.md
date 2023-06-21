@@ -294,6 +294,11 @@ pagination 의 요청 정보는 다음과 같습니다.
   |size|20|
   |sort|['id,asc', 'displaySize,desc']|
 
+  조회의 정렬정보에 해당하는 `sort` 값은 컬럼의 정렬순서의 단위로 여러개가 지정되는 구조이며, JSONArray 의 문자열 포멧으로 지정하여 사용 합니다.   
+  예를들어 "id 컬럼 오름차순", "displaySize 컬럼 내림차순" 의 정보를 전송할 경우 `['id,ASC','displaySize,DESC']` 으로 지정 합니다.   
+  컬럼 이름은 Lower-camel 형식으로 사용되어야 하며, SQL 구문으로 사용 시 Upper-Underscore 형식으로 전환되어 사용 됩니다. (displaySize --> DISPLAY_SIZE)
+
+
   ```json
   {
     ...

@@ -206,11 +206,10 @@ http-request 으로 요청된 정보는 Controller method 에 선언된 argument
 해당 argument class type 의 객체 정보로 Deserialize 과정을 거쳐서 DTO java class 로 사용됩니다.   
 `prunus-nexacro-adaptor` 에서는 이러한 http-request 요청 정보를 Controller 로 전달 받기 위한 2가지 방법을 제공하며, 다음과 같은 특징이 있습니다.
 
-|메세지 수신 방식|특징|
-|---|---|
-|MethodArgumentResolver|클라이언트에서 전송된 각각의 값을 개별 argument 로 사용|
-|HttpMessageConverter|클라이언트에서 전송된 값을 하나의 aurment 로 수신하여 내부의 개별 값으로 사용|
-
+|메세지 수신 방식|Request 수신|Response 반환|
+|---|---|---|
+|MethodArgumentResolver|클라이언트에서 전송된 각각의 값을 개별 argument 로 사용|반환하고자 하는 개별 값을 variable, dataset 구분으로 조합하여 NexacroResult 타입으로 반환|
+|HttpMessageConverter|클라이언트에서 전송된 값을 하나의 aurment 로 수신하여 내부의 개별 값으로 사용|반환하고자 하는 개별 값을 하나의 집합 객체의 필드 정보로 지정하여 반환|
 
 ## MethodArgumentResolver
 
@@ -219,31 +218,45 @@ http-request 으로 요청된 정보는 Controller method 에 선언된 argument
   속성은 다음과 같은 사항으로 사용합니다.
 
   |속성|설명|기본값|필수사용여부|
-  |---|---|---|:---:|
+    |---|---|---|:---:|
   |name or value|지정된 값에 대응하는 클라이언트 전문의 값을 판별 합니다.|없음|O|
-  |required|클라이언트에서 전문의 값의 필수 여부를 지정합니다.|false|X|
+  |required|클라이언트에서 전문의 값의 필수 여부를 지정합니다.|true|X|
 
 - @DataSet   
-  집합 개념의 값을 전송 받을 경우 사용하며, 속성 값은 @Variable 동일하게 사용됩니다.   
+  집합 개념의 값을 전송 받을 경우 사용하며, 속성 값은 @Variable 과 사용법이 동일 합니다.   
   값이 목록형으로 전송되었다 하더라도, argument type 이 단일 객체 타입으로 선언되어 있을 경우 단일 객체 타입으로 자동으로 받아집니다.   
   부분범위 조회를 위한 정보를 수신하기 위해서는 `Pagination` class type 의 argument 를 선언하여 사용 합니다.   
+
+
+- Response result 처리   
+  `NexacroResult.builder() ... build()` 형식으로 `variable`, `dataSet` 메서드의 chaining 사용을 통해 개별 값을 지정하여 반환 합니다.   
+  `NexacroResult` 는 DTO class 가 아니며, ReturnValueResolver 를 통해 View 로 반환되므로, `@ResponseBody` 를 선언하지 않아야 합니다.
 
 
 - Controller method
 ```java
 @PostMapping("/resolver")
-public Equipment resolverNormal(
+public NexacroResult resolverNormal(
         // 단일 값이며, name 속성은 필수로 전달받아야 할 값이며, "id" 라는 명칭으로 판별 합니다. null 일 경우 예외를 발생합니다.
-        @Variable(name="id", required = true) String id,
+        @Variable("id") String id,
         @Variable("name") String name,
-        @Variable("seq") int seq,
-        // 집합 값이며, name 속성은 필수로 전달받아야 할 값이며, "ds_desktop" 라는 명칭으로 판별 합니다. null 일 경우 예외를 발생합니다.
-        @DataSet(name="ds_desktop", required = true) Desktop desktop,
+        // 단일 값이며, name 속성은 필수로 전달받아야 할 값이며, "seq" 라는 명칭으로 판별 합니다. null 일 경우를 허용합니다.
+        @Variable(name="seq", required = false) int seq,
+        // 집합 값이며, name 속성은 필수로 전달받아야 할 값이며, "laptops" 라는 명칭으로 판별 합니다. null 일 경우 예외를 발생합니다.
         @DataSet("laptops") List<Laptop> laptops,
-        // 부분범위 조회를 위한 정보를 받아올 경우 Pagination 을 사용 합니다.
+        // 집합 값이며, name 속성은 필수로 전달받아야 할 값이며, "ds_desktop" 라는 명칭으로 판별 합니다. null 일 경우를 허용합니다.
+        @DataSet(name="ds_desktop", required = false) Desktop desktop,
+        // 집합 값의 사용법과 동일하며, 부분범위 조회를 위한 정보를 받아올 경우 Pagination 을 사용 합니다.
         @DataSet("ds_paging") Pagination pagination) {
     Pageable pageable = pagination.pageable();
-    return service.getEquipment(id, name, seq, desktop, laptops, pageable);
+    Equipment equipment = service.getEquipment(id, name, seq, desktop, laptops, pageable);
+    return NexacroResult.builder()
+            .variable("id", equipment.getId())
+            .variable("name", equipment.getName())
+            .dataSet("ds_paging", equipment.getPagination())
+            .dataSet("ds_desktop", equipment.getDesktop())
+            .dataSet("laptops", equipment.getLaptops())
+            .build();
 }
 ```
 
@@ -255,6 +268,7 @@ public Equipment resolverNormal(
 
 - Controller method
 ```java
+@ResponseBody
 @PostMapping("/converter")
 // @RequestBody 어노테이션으로 선언된 Equipment class 타입의 단일 argument 로 모든 정보를 수신 합니다.
 public Equipment converterNormal(@RequestBody Equipment equipment) {
@@ -262,10 +276,10 @@ public Equipment converterNormal(@RequestBody Equipment equipment) {
     Pageable pageable = equipment.getPagination().pageable();
     return service.getEquipment(equipment, pageable);
 }
-
 ```
 
-클라이언트에서 전송 된 값의 이름은 `@JsonAlias` 어노테이션을 사용하여 해당 field 에 대응하여 전환 됩니다. 만약 `@JsonAlias` 의 이름이 선언되어 있지 않으면 field name 으로 대응하여 전환 됩니다.
+클라이언트에서 전송 된 값의 이름은 `@JsonAlias` 어노테이션을 사용하여 해당 field 에 대응하여 전환 됩니다.
+만약 `@JsonAlias` 의 이름이 선언되어 있지 않으면 field name 으로 대응하여 전환 됩니다.
 
 - RequestBody 에 해당하는 method argument DTO
 ```java
@@ -287,10 +301,6 @@ public class Equipment {
     private List<Laptop> laptops;
 }
 ```
-## 참고 사항
-### 부분범위 조회시 사용하는 sort 정보
-조회의 정렬정보에 해당하는 `sort` 값은 컬럼의 정렬순서의 단위로 여러개를 지정하는 구조 이므로, JSONArray 의 문자열 포멧으로 지정하여 사용 합니다.   
-만일 "id 컬럼 오름차순", "displaySize 컬럼 내림차순" 의 정보를 전송할 경우 `['id,ASC','displaySize,DESC']` 으로 지정 합니다.
 
 ## Test Client
 `prunus-nexacro-adaptor` 의 전문 송/수신을 테스트하기 위해서는 다음 절차를 통해 테스트 해 볼 수 있습니다.
