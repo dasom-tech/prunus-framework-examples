@@ -1,10 +1,12 @@
 # prunus-persistence-mybatis
-`prunus-persistence-mybatis` 는 데이타를 생성 또는 수정할 경우 행위 정보를 자동으로 저장해주는 audit 기능과, 대용량 데이타를 부분범위로 조회하는 pagination 기능을 제공합니다. 이러한 기능은 `prunus-persistence-data` 를 공통으로 사용하며, `prunus-persistence-jpa` 도 동일한 기능으로 동작합니다.
+`prunus-persistence-mybatis` 는 데이타를 생성 또는 수정할 경우 행위 정보를 자동으로 저장해주는 audit 기능과, 대용량 데이타를 부분범위로 조회하는 pagination 기능을 제공합니다.
+이러한 기능은 `prunus-persistence-data` 를 공통으로 사용하며, `prunus-persistence-jpa` 도 동일한 기능으로 동작합니다.
 
 ## Audit
 
 ### AuditableEntity
-기본적으로 제공하는 audit 정보 field 로 구성된 추상 클래스입니다. 이 클래스를 상속한 model class 를 사용하면,  각 field 에 해당하는 `auditProvider` 가 동작하여 audit 정보가 저장됩니다.   
+기본적으로 제공하는 audit 정보 field 로 구성된 추상 클래스입니다. 이 클래스를 상속한 model class 를 사용하면,
+각 field 에 해당하는 `auditProvider` 가 동작하여 audit 정보가 저장됩니다.   
 
 ```java
 @Getter
@@ -55,7 +57,8 @@ audit field 에 해당하는 DB TABLE COLUMN 이 다음과 같이 지정되었�
 |수정|modifiedDate|MOD_DATE|
 |수정|modifiedRemoteAddr|MOD_ADDR|
 
-audit field <--> db column 정보는 `@AttributeOverrides` 어노테이션을 사용하여 정의하며, 다음과 같은 `AuditEntity`처럼 별도의 중간 단계의 상위 클래스를 생성하여 사용하고자 하는 entity class 에서 상속 받아 사용합니다.
+audit field <--> db column 정보는 `@AttributeOverrides` 어노테이션을 사용하여 정의하며,
+다음과 같은 `AuditEntity`처럼 별도의 중간 단계의 상위 클래스를 생성하여 사용하고자 하는 entity class 에서 상속 받아 사용합니다.
 ```java
 @AttributeOverrides({
         @AttributeOverride(name="createdBy", column=@Column(name="CRE_USER")),
@@ -99,8 +102,11 @@ public class AuditEntity extends AuditableEntity {
 ```
 
 ### 기본 제공 audit provider 를 임의의 audit provider 로 대체 하여 사용
-`createdBy` field 에 해당하는 `AuditingSubjectProvider` 를 대체하고자 할 경우, `AuditingAware` 인터페이스의 `provide` 메서드를 구현한 provider 클래스를 생성하고, 해당 provider bean 명칭으로 spring bean 으로 등록하면, 기본 provider 가 대체되어 동작합니다.   
-(* 해당 provider bean name 은 AuditProviderSupport.SUBJECT_PROVIDER_BEAN_NAME 값으로 정의되어 있으며, 명칭은 "auditingSubjectProvider" 으로 지정되어 있습니다.)
+`createdBy` field 에 해당하는 `AuditingSubjectProvider` 를 대체하고자 할 경우,
+`AuditingAware` 인터페이스의 `provide` 메서드를 구현한 provider 클래스를 생성하고,
+해당 provider bean 명칭으로 spring bean 으로 등록하면, 기본 provider 가 대체되어 동작합니다.   
+(* 해당 provider bean name 은 AuditProviderSupport.SUBJECT_PROVIDER_BEAN_NAME 값으로 정의되어 있으며,
+명칭은 "auditingSubjectProvider" 으로 지정되어 있습니다.)
 ```java
 public class UserAuditingSubjectProvider implements AuditingAware<String> {
 
@@ -199,8 +205,10 @@ public class MybatisConfiguration {
 |prunus.persistence.data.audit.modify-on-create| 데이터 추가 시에 추가항목 외에 수정 항목도 기록할지 여부|false|
 
 ## Pagination
-mybatis 를 사용하여 대용량 데이터를 부분범위로 조회할 경우, 일반적으로 조회 SQL 을 기반으로 가공하여 사용하게 됩니다. 또한, DB 가 변경되었거나 이기종의 DB 를 동시에 사용시 처리 사항의 복잡도가 증가 합니다.   
-이런 문제점을 해결하고자, pagination 정보를 요청할 경우는 일반 조회를 부분범위 조회로 변경하여 동작하는 기능과, 각각의 DB 에 대응하는 부분범위 SQL 으로 적용하여 동작하는 Dialect 기능을 제공 합니다.
+mybatis 를 사용하여 대용량 데이터를 부분범위로 조회할 경우, 일반적으로 조회 SQL 을 기반으로 가공하여 사용하게 됩니다.
+또한, DB 가 변경되었거나 이기종의 DB 를 동시에 사용시 처리 사항의 복잡도가 증가 합니다.   
+이런 문제점을 해결하고자, pagination 정보를 요청할 경우는 일반 조회를 부분범위 조회로 변경하여 동작하는 기능과,
+각각의 DB 에 대응하는 부분범위 SQL 으로 적용하여 동작하는 Dialect 기능을 제공 합니다.
 
 ### pagination 요청정보
 pagination 의 요청 정보는 다음과 같습니다.
@@ -226,7 +234,8 @@ pagination 의 요청 정보는 다음과 같습니다.
   page=1&size=10&sort=id,asc&sort=displaySize,desc
   ```
 
-  controller method 에서 pagination 정보는 `Pageable` 인터페이스 타입의 메서드 파라미터에 자동으로 받아집니다. 따라서, 클라이언트에서 보내는 정보에 대응하는 메서드 파라미터(`LaptopReq`)와는 별도로, `Pageable` 인터페이스 타입으로 지정해야 합니다.
+  controller method 에서 pagination 정보는 `Pageable` 인터페이스 타입의 메서드 파라미터에 자동으로 받아집니다.
+  따라서, 클라이언트에서 보내는 정보에 대응하는 메서드 파라미터(`LaptopReq`)와는 별도로, `Pageable` 인터페이스 타입으로 지정해야 합니다.
   ```java
   @GetMapping("/pageable/page")
   public Page<LaptopDto> getPageablePage(LaptopReq laptopReq, Pageable pageable) {
@@ -234,7 +243,8 @@ pagination 의 요청 정보는 다음과 같습니다.
   }
   ```
 
-  하지만, `LaptopReq` 가 `Pageable` 인터페이스 구현체라면, 별도의 `Pageable` 파라미터가 필요 없이 `LaptopReq` 파라미터가 Pagination 정보를 받아줍니다. 이럴 경우, service 메서드에 전달할 때, 별도로 `Pageable` 을 추출하여(`laptopReq.pageable()`) 전달 하도록 합니다.
+  하지만, `LaptopReq` 가 `Pageable` 인터페이스 구현체라면, 별도의 `Pageable` 파라미터가 필요 없이 `LaptopReq` 파라미터가 Pagination 정보를 받아줍니다.
+  이럴 경우, service 메서드에 전달할 때, 별도로 `Pageable` 을 추출하여(`laptopReq.pageable()`) 전달 하도록 합니다.
   ```java
   @GetMapping("/dto/page")
   public Page<LaptopDto> getPage(LaptopReq laptopReq) {
@@ -255,7 +265,8 @@ pagination 의 요청 정보는 다음과 같습니다.
       private boolean deleted;
   }
   ```
-  service 로 전달된 `Pageable` 객체는 mapper method 의 별도의 파라미터로 전달되어 pagination 기능이 동작하게 됩니다. 이때, `Pageable` 객체는 mapper method 파라미터의 순서에 무관하며, 별도의 파라미터로 mapper method 파라미터로 전달되어야 합니다.
+  service 로 전달된 `Pageable` 객체는 mapper method 의 별도의 파라미터로 전달되어 pagination 기능이 동작하게 됩니다.
+  이때, `Pageable` 객체는 mapper method 파라미터의 순서에 무관하며, 별도의 파라미터로 mapper method 파라미터로 전달되어야 합니다.
   - service method
   ```java
   public Page<LaptopDto> getPage(LaptopReq laptopReq, Pageable pageable) {
@@ -269,7 +280,8 @@ pagination 의 요청 정보는 다음과 같습니다.
   ```java
   Page<Laptop> selectPage(LaptopReq laptopReq, Pageable pageable);
   ```
-  다만, mapper method 의 반환 타입이 Page&lt;T&gt; 일 경우, pagination 정보를 포함하고 있는 객체로 반환하지만, 단순 부분 조회 목록을 반환하고자 할 경우 List&lt;T&gt; 타입으로 선언하여 사용 합니다.
+  다만, mapper method 의 반환 타입이 Page&lt;T&gt; 일 경우 pagination 정보를 포함하고 있는 객체로 반환하지만,
+  단순 부분 조회 목록을 반환하고자 할 경우 List&lt;T&gt; 타입으로 선언하여 사용 합니다.
   ```java
   List<Laptop> selectPageList(LaptopReq laptopReq, Pageable pageable);
   ```
@@ -293,7 +305,9 @@ pagination 의 요청 정보는 다음과 같습니다.
     ...
   }
   ```
-  통상적으로 조회 요청은 `GET` method 타입의 Query Parameter 를 전달하지만, `POST` method 를 사용한 Body 를 전달하고자 할 경우 `RequestBody` 에 해당하는 객체에는 `Pagination` 타입의 클래스 필드를 선언 하여야 합니다. 이렇게 선언된 `Pagination` 타입의 필드는 pagination 정보를 받게 됩니다.
+  통상적으로 조회 요청은 `GET` method 타입의 Query Parameter 를 전달하지만,
+  `POST` method 를 사용한 Body 를 전달하고자 할 경우 `RequestBody` 에 해당하는 객체에는 `Pagination` 타입의 클래스 필드를 선언 하여야 합니다.
+  이렇게 선언된 `Pagination` 타입의 필드는 pagination 정보를 받게 됩니다.
   ```java
   @Getter
   @Setter
@@ -359,7 +373,12 @@ spring:
 
 ## 주의 사항
 ### Page&lt;T&gt; 반환 내용의 page number
-mapper method 의 반환 타입이 Page&lt;T&gt; 일 경우, pagination 정보를 포함하고 있는 객체로 반환 됩니다. 하지만, 내부 page number 는 항상 본래의 값 보다 -1 값으로 지정되어 있습니다. 이는 `spring-data-commons` 의 page number 는 '0' 에서 시작하는 사항으로 구현되어 있기 때문 입니다. 시작 번호를 '1' 부터 시작하는 옵션인 `pring.data.web.pageable.one-indexed-parameters=true` 로 지정되어 있다 하더라도, `Pageable` 과 `Page` 객체 내부의 page number 관련 값은 여전히 '0' 으로 시작하는 기준으로 반영되어 있습니다. 따라서 요청 값과는 별도로 내부 page number 값을 참조해야 할 경우 +1 처리하여 사용해야 합니다.   
+mapper method 의 반환 타입이 Page&lt;T&gt; 일 경우, pagination 정보를 포함하고 있는 객체로 반환 됩니다.
+하지만, 내부 page number 는 항상 본래의 값 보다 -1 값으로 지정되어 있습니다.
+이는 `spring-data-commons` 의 page number 는 '0' 에서 시작하는 사항으로 구현되어 있기 때문 입니다.
+시작 번호를 '1' 부터 시작하는 옵션인 `pring.data.web.pageable.one-indexed-parameters=true` 로 지정되어 있다 하더라도,
+`Pageable` 과 `Page` 객체 내부의 page number 관련 값은 여전히 '0' 으로 시작하는 기준으로 반영되어 있습니다.
+따라서 요청 값과는 별도로 내부 page number 값을 참조해야 할 경우 +1 처리하여 사용해야 합니다.   
 (* page number 값 key : `pageNumber`)
 
 - 반환 타입 반환 타입이 Page&lt;T&gt; 의 경우 데이터 예시
