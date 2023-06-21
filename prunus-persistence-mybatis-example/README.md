@@ -4,7 +4,7 @@
 ## Audit
 
 ### AuditableEntity
-기본적으로 제공하는 audit 정보만을 field 로 구성된 추상 클래스로서, 이 클래스를 상속한 model class 를 사용하면,  각 field 에 해당하는 `auditProvider` 가 동작하여 audit 정보가 저장됩니다.   
+기본적으로 제공하는 audit 정보 field 로 구성된 추상 클래스입니다. 이 클래스를 상속한 model class 를 사용하면,  각 field 에 해당하는 `auditProvider` 가 동작하여 audit 정보가 저장됩니다.   
 
 ```java
 @Getter
@@ -89,8 +89,10 @@ public class Laptop extends AuditEntity {
 @AttributeOverrides({
         @AttributeOverride(name="createdBy", column=@Column(name="CRE_USER")),
         @AttributeOverride(name="createdDate", column=@Column(name="CRE_DATE")),
+        /* @AttributeOverride(name="createdRemoteAddr", column=@Column(name="CRE_ADDR")), */ // 제외
         @AttributeOverride(name="modifiedBy", column=@Column(name="MOD_USER")),
         @AttributeOverride(name="modifiedDate", column=@Column(name="MOD_DATE"))
+        /* @AttributeOverride(name="modifiedRemoteAddr", column=@Column(name="MOD_ADDR")) */ // 제외
 })
 public class AuditEntity extends AuditableEntity {
 }
@@ -198,7 +200,7 @@ public class MybatisConfiguration {
 
 ## Pagination
 mybatis 를 사용하여 대용량 데이터를 부분범위로 조회할 경우, 일반적으로 조회 SQL 을 기반으로 가공하여 사용하게 됩니다. 또한, DB 가 변경되었거나 이기종의 DB 를 동시에 사용시 처리 사항의 복잡도가 증가 합니다.   
-이런 문제점을 해결하고자, pagination 정보를 요청할 경우는 일반 조회를 부분범위 조회로 변경하여 동작하는 기능과, 각각의 DB 에 대응하는 부분범위 SQL 으로 적용하여 동작하는 기능을 제공 합니다.
+이런 문제점을 해결하고자, pagination 정보를 요청할 경우는 일반 조회를 부분범위 조회로 변경하여 동작하는 기능과, 각각의 DB 에 대응하는 부분범위 SQL 으로 적용하여 동작하는 Dialect 기능을 제공 합니다.
 
 ### pagination 요청정보
 pagination 의 요청 정보는 다음과 같습니다.
@@ -236,6 +238,7 @@ pagination 의 요청 정보는 다음과 같습니다.
   ```java
   @GetMapping("/dto/page")
   public Page<LaptopDto> getPage(LaptopReq laptopReq) {
+      // laptopReq.pageable() 을 사용하여 별도의 Pageable 객체를 전달 합니다.       
       return service.getPage(laptopReq, laptopReq.pageable());
   }
   ```
@@ -243,6 +246,7 @@ pagination 의 요청 정보는 다음과 같습니다.
   ```java
   @Getter
   @Setter
+  // Pagination 을 상속 받으면 Pageable 인터페이스를 구현한 객체로 사용됩니다.
   public class LaptopReq extends Pagination {
 
       private long id;
@@ -255,7 +259,9 @@ pagination 의 요청 정보는 다음과 같습니다.
   - service method
   ```java
   public Page<LaptopDto> getPage(LaptopReq laptopReq, Pageable pageable) {
+      // 앞서 전달 받은 Pageable 을 별도의 파라미터로 전달 합니다.
       Page<Laptop> laptops = mapper.selectPage(laptopReq, pageable);
+      // 반환 타입이 Page<T> 일 경우 PageImpl 구현체를 사용하여 반환 합니다.
       return new PageImpl<>(laptops.stream().map(LaptopDto::of).collect(Collectors.toList()), pageable, laptops.getTotalElements());
   }
   ```
@@ -296,7 +302,7 @@ pagination 의 요청 정보는 다음과 같습니다.
       private Pagination pagination;
   }
   ```
-  해당 객체는 다음과 같이 컨트롤러 메서드의 파라미터로 사용됩니다.
+  해당 객체는 다음과 같이 컨트롤러 메서드의 `@RequestBody` 파라미터로 사용됩니다.
   ```java
   @PostMapping("/post/page")
   public Page<LaptopDto> getPageByPostMethod(@RequestBody Equipment equipment) {
