@@ -302,6 +302,13 @@ public class Equipment {
 }
 ```
 
+
+## Properties
+|이름|설명|기본값|
+|---|---|---|
+|prunus.nexacro.adaptor.argument-resolver.enabled|argument-resolver 기능 사용 여부|true|
+|prunus.nexacro.adaptor.message-converter.enabled|message-converter 기능 사용 여부|true|
+
 ## Test Client
 `prunus-nexacro-adaptor` 의 전문 송/수신을 테스트하기 위해서는 다음 절차를 통해 테스트 해 볼 수 있습니다.
 * `prunus-nexacro-adaptor-example` 을 실행합니다.

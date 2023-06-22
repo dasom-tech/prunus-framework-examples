@@ -30,11 +30,11 @@ public class AdaptorController {
 
     @PostMapping("/resolver")
     public NexacroResult resolverNormal(
-            @VariableParam(name="id", required = true) String id,
+            @VariableParam("id") String id,
             @VariableParam("name") String name,
-            @VariableParam("seq") int seq,
-            @DataSetParam(name="ds_desktop", required = true) Desktop desktop,
+            @VariableParam(name="seq", required = false) int seq,
             @DataSetParam("laptops") List<Laptop> laptops,
+            @DataSetParam(name="ds_desktop", required = false) Desktop desktop,
             @DataSetParam("ds_paging") Pagination pagination) {
         Pageable pageable = pagination.pageable();
         Equipment equipment = service.getEquipment(id, name, seq, desktop, laptops, pageable);
