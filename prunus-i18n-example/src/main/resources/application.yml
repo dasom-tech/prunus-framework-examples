@@ -1,0 +1,22 @@
+prunus:
+  i18n:
+    default-locale: ko
+    locale-resolve-type: session
+    locale:
+      path: /locale
+      parameter-name: lang
+    cookie-name: prunus.LOCALE
+    cookie-max-age: -1
+    cookie-path: /
+    cookie-domain:
+
+spring:
+  datasource:
+    hikari:
+      driver-class-name: org.h2.Driver
+      jdbc-url: jdbc:h2:mem:testdb
+      username: sa
+      password:
+  messages:
+    basename: messages/message, messages/valid
+    encoding: UTF-8

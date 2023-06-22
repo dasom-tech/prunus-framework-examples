@@ -1,0 +1,124 @@
+{
+	"info": {
+		"_postman_id": "c057275b-9daa-4d20-b61b-8f3c1b511594",
+		"name": "i18n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7781688"
+	},
+	"item": [
+		{
+			"name": "로케일변경",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/locale?lang=ko",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"locale"
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "ko"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "messageSource 메세지출력",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/message",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"message"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "유효성검사 오류",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"\",\r\n    \"address\": \"서울\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/valid",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"valid"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "유효성검사 성공",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"홍길동\",\r\n    \"address\": \"서울시 강남구\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/valid",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"valid"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "사용자예외처리",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/exception",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exception"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
