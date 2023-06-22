@@ -1,12 +1,12 @@
 # prunus-nexacro-adaptor
 
-`prunus-nexacro-adaptor`는 nexacro 전문 형식과, 데이타 타입을 이용하여 클라이언트와 서버간의 통신을 용이하기 위한 기능을 제공합니다.
-nexacro 전문 양식은 XML, JSON 의 포멧으로 전달되어 서버에서 Deserialize 과정을 거쳐서 임의의 DTO 로 전환 됩니다.
+`prunus-nexacro-adaptor`는 nexacro 전문 형식 및 데이타 타입을 이용하여 클라이언트와 서버간의 통신을 용이하기 위한 기능을 제공합니다.
+nexacro 전문 양식은 XML, JSON 의 포멧으로 사용되며, 서버에서 Deserialize 과정을 거쳐서 임의의 DTO 로 전환 됩니다.
 하지만, 이중 JSON 은 nexacro 의 전용 포멧으로 구성되어 있으므로, 일반적인 객체를 표현하는 방식과는 많은 차이가 있습니다.
-따라서 `prunus-nexacro-adaptor` 에서 제공되는 Parser 는 nexacro 전용 전문 형식과 함께 일반적인 JSON 포멧 송/수신의 기능을 제공합니다.
-단, 각각의 전문 형식의 타입의 구분을 위해서는 반드시 전문 요청 시 임의의 http-request-header `Content-Type` 을 지정해야 합니다.   
+따라서 `prunus-nexacro-adaptor` 에서 제공되는 Parser 는 nexacro 전용 전문 형식과 함께 일반적인 JSON 포멧 송/수신의 기능을 제공합니다.   
+단, 각각의 전문 형식의 타입의 구분을 위해서 반드시 전문 요청 시 http-request-header `Content-Type` 을 지정해야 합니다.   
  
-- nexacro http-request-header Content-Type
+- http-request-header Content-Type
 
 |전문형식|Content-Type|
 |---|---|
@@ -213,8 +213,8 @@ http-request 으로 요청된 정보는 Controller method 에 선언된 argument
 
 ## MethodArgumentResolver
 
-- @VariableParam   
-  비 집합 개념의 단일 값을 전송 받을 경우 사용하며, `name` 속성에 따라 클라이언트에서 전송된 전문의 해당 값으로 받아옵니다.   
+- **@VariableParam**   
+  단일 값을 전송 받을 경우 사용하며, `name` 속성에 따라 클라이언트에서 전송된 전문의 해당 값으로 받아옵니다.   
   속성은 다음과 같은 사항으로 사용합니다.
 
   |속성|설명|기본값|필수사용여부|
@@ -222,7 +222,7 @@ http-request 으로 요청된 정보는 Controller method 에 선언된 argument
   |name or value|지정된 값에 대응하는 클라이언트 전문의 값을 판별 합니다.|없음|O|
   |required|클라이언트로 부터 전달된 전문의 값의 필수 여부를 지정합니다.|true|X|
 
-- @DataSetParam   
+- **@DataSetParam**   
   집합 개념의 값을 전송 받을 경우 사용하며, 속성 값은 @Variable 과 사용법이 동일 합니다.   
   값이 목록형으로 전송되었다 하더라도, argument type 이 단일 객체 타입으로 선언되어 있을 경우 단일 객체 타입으로 자동으로 받아집니다.   
   부분범위 조회를 위한 정보를 수신하기 위해서는 `Pagination` class type 의 argument 를 선언하여 사용 합니다.   
@@ -237,16 +237,16 @@ http-request 으로 요청된 정보는 Controller method 에 선언된 argument
 ```java
 @PostMapping("/resolver")
 public NexacroResult resolverNormal(
-        // 단일 값이며, name 속성은 필수로 전달받아야 할 값이며, "id" 라는 명칭으로 판별 합니다. null 일 경우 예외를 발생합니다.
+        // 단일 값이며, name 속성은 필수로 지정 하여 "id" 라는 명칭으로 판별 합니다. null 일 경우 예외를 발생합니다.
         @VariableParam("id") String id,
         @VariableParam("name") String name,
-        // 단일 값이며, name 속성은 필수로 전달받아야 할 값이며, "seq" 라는 명칭으로 판별 합니다. null 일 경우를 허용합니다.
+        // 단일 값이며, name 속성은 필수로 지정 하여 "seq" 라는 명칭으로 판별 합니다. null 일 경우를 허용합니다.
         @VariableParam(name="seq", required = false) int seq,
-        // 집합 값이며, name 속성은 필수로 전달받아야 할 값이며, "laptops" 라는 명칭으로 판별 합니다. null 일 경우 예외를 발생합니다.
+        // 집합 값이며, name 속성은 필수로 지정 하여 "laptops" 라는 명칭으로 판별 합니다. null 일 경우 예외를 발생합니다.
         @DataSetParam("laptops") List<Laptop> laptops,
-        // 집합 값이며, name 속성은 필수로 전달받아야 할 값이며, "ds_desktop" 라는 명칭으로 판별 합니다. null 일 경우를 허용합니다.
+        // 집합 값이며, name 속성은 지정 하여 "ds_desktop" 라는 명칭으로 판별 합니다. null 일 경우를 허용합니다.
         @DataSetParam(name="ds_desktop", required = false) Desktop desktop,
-        // 집합 값의 사용법과 동일하며, 부분범위 조회를 위한 정보를 받아올 경우 Pagination 을 사용 합니다.
+        // 집합 값의 사용법과 동일하며, 부분범위 조회를 위한 정보를 받아올 경우 Pagination 타입으로 사용 합니다.
         @DataSetParam("ds_paging") Pagination pagination) {
     Pageable pageable = pagination.pageable();
     Equipment equipment = service.getEquipment(id, name, seq, desktop, laptops, pageable);
@@ -263,8 +263,8 @@ public NexacroResult resolverNormal(
 ## HttpMessageConverter
 일반적인 POST method 방식을 통해 Body 를 전송하는 경우의 사용법을 따르며,
 단일 Request Body 전송의 규칙에 따라서 method argument 도 단일의 객체로 선언하여 정보를 수신합니다.
-따라서 클라이언트에서 전송된 정보는 method argument class field 단위 개별적인 값을 참조하여 사용됩니다.   
-만약 부분범위 조회 정보를 수신 받고자 할 경우, 단일 argument class 내의 filed 를 Pagination 타입으로 선언하여 수신 받습니다.
+따라서 클라이언트에서 전송된 정보는 method argument class field 단위 개별적인 값으로 전달 됩니다.   
+만약 부분범위 조회 정보를 수신 할 경우, field type 을 Pagination 으로 선언하여 전달 받습니다.
 
 - Controller method
 ```java
@@ -272,14 +272,14 @@ public NexacroResult resolverNormal(
 @PostMapping("/converter")
 // @RequestBody 어노테이션으로 선언된 Equipment class 타입의 단일 argument 로 모든 정보를 수신 합니다.
 public Equipment converterNormal(@RequestBody Equipment equipment) {
-    // 부분범위 조회 정보는 Equipment 내의 Pagination 타입 field 값을 사용 합니다.
+    // 부분범위 조회 정보는 Equipment 내의 Pagination field 값을 사용 합니다.
     Pageable pageable = equipment.getPagination().pageable();
     return service.getEquipment(equipment, pageable);
 }
 ```
 
 클라이언트에서 전송 된 값의 이름은 `@JsonAlias` 어노테이션을 사용하여 해당 field 에 대응하여 전환 됩니다.
-만약 `@JsonAlias` 의 이름이 선언되어 있지 않으면 field name 으로 대응하여 전환 됩니다.
+만약 `@JsonAlias` 의 이름이 선언되어 있지 않으면 field name 으로 전환 됩니다.
 
 - RequestBody 에 해당하는 method argument DTO
 ```java
@@ -293,7 +293,7 @@ public class Equipment {
     private String id;
     private String name;
     private int seq;
-    // 클라이언트에서 "ds_paging" 라는 이름으로 전송된 값을 수용하며, field name 과는 무관 합니다.
+    // 클라이언트에서 "ds_paging" 라는 이름으로 전송된 값을 수용하며, field name 보다 우선 순위로 처리 됩니다.
     @JsonAlias("ds_paging")
     private Pagination pagination;
     @JsonAlias("ds_desktop")

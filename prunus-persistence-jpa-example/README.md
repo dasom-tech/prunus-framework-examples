@@ -39,12 +39,12 @@ public abstract class AuditableEntity implements Auditable {
 
 |구분|field|provider|역할|
 |---|---|---|---|
-|생성|createdBy|auditingSubjectProvider|데이타생성행위자ID|
-|생성|createdDate|auditingDateProvider|데이타생성시각|
-|생성|createdRemoteAddr|auditingAddressProvider|데이타생성clientIPaddress|
-|수정|modifiedBy|auditingSubjectProvider|데이타수정행위자ID|
-|수정|modifiedDate|auditingDateProvider|데이타수정시각|
-|수정|modifiedRemoteAddr|auditingAddressProvider|데이타수정clientIPaddress|
+|생성|createdBy|auditingSubjectProvider|데이타 생성 행위자 ID|
+|생성|createdDate|auditingDateProvider|데이타 생성 시각|
+|생성|createdRemoteAddr|auditingAddressProvider|데이타 생성 client IP address|
+|수정|modifiedBy|auditingSubjectProvider|데이타 수정 행위자 ID|
+|수정|modifiedDate|auditingDateProvider|데이타 수정 시각|
+|수정|modifiedRemoteAddr|auditingAddressProvider|데이타 수정 client IP address|
 
 ### AuditableEntity 와 DB TABLE 매핑
 audit field 에 해당하는 DB TABLE COLUMN 이 다음과 같이 지정되었을 경우,
@@ -154,9 +154,9 @@ public class MybatisConfiguration {
 기본 제공 audit field / provider 외에 별도의 audit 정보를 추가하고자 할 경우 추가 사항은 다음과 같습니다.   
 - audit annotaion 생성
 ```java
-// "생성" field 에 사용되는 어노테이션
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = FIELD)
+// "생성" field 에 사용되는 어노테이션
 public @interface PersistDept {
 
     AuditType type() default PERSIST; // "생성" 타입으로 정의 합니다.
@@ -164,9 +164,9 @@ public @interface PersistDept {
 }
 ```
 ```java
-// "수정" field 에 사용되는 어노테이션 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = FIELD)
+// "수정" field 에 사용되는 어노테이션 
 public @interface UpdateDept {
 
     AuditType type() default UPDATE; // "수정" 타입으로 정의 합니다.
@@ -230,7 +230,7 @@ public class MybatisConfiguration {
 ## Pagination
 JPA 는 `prunus-persistence-data` 을 기본으로 사용함으로서 부분범위 데이터 조회가 가능합니다.
 Controller method 의 argument 가 `Pageable` 타입으로 선언되어 있을 경우, `PageableHandlerMethodArgumentResolver` 가 동작하여 해당 정보를 주입 합니다.   
-하지만, GET method 방식의 Query Parameters 로 전달되었을 경우에 국한되며, `prunus-persistence-jpa` 는 POST method 방식의 Body 로 전달 방식을 지원 합니다.
+하지만, GET method 방식의 Query Parameters 로 전달되었을 경우에 국한되며, `prunus-persistence-jpa` 는 POST method 방식의 Body 정보 전달을 지원 합니다.
 
 ### pagination 요청정보
 pagination 의 요청 정보는 다음과 같습니다.
@@ -293,23 +293,23 @@ pagination 의 요청 정보는 다음과 같습니다.
   service 로 전달된 `Pageable` 객체는 repository method 의 별도의 파라미터로 전달되어 pagination 기능이 동작하게 됩니다.
   이때, `Pageable` 객체는 repository method 파라미터에서 두번째 순서로 전달되어야 합니다.
   - service method
-  ```java
-  public Page<LaptopDto> getPage(LaptopReq laptopReq, Pageable pageable) {
-      // 앞서 전달 받은 Pageable 을 두번째 파라미터로 전달 합니다.
-      Page<Laptop> laptops = repository.findAllByVendorAndDeletedIsFalse(laptopReq.getVendor(), pageable);
-      // 반환 타입이 Page<T> 일 경우 PageImpl 구현체를 사용하여 반환 합니다.
-      return new PageImpl<>(laptops.stream().map(LaptopDto::of).collect(Collectors.toList()), pageable, laptops.getTotalElements());
-  }
-  ```
+    ```java
+    public Page<LaptopDto> getPage(LaptopReq laptopReq, Pageable pageable) {
+        // 앞서 전달 받은 Pageable 을 두번째 파라미터로 전달 합니다.
+        Page<Laptop> laptops = repository.findAllByVendorAndDeletedIsFalse(laptopReq.getVendor(), pageable);
+        // 반환 타입이 Page<T> 일 경우 PageImpl 구현체를 사용하여 반환 합니다.
+        return new PageImpl<>(laptops.stream().map(LaptopDto::of).collect(Collectors.toList()), pageable, laptops.getTotalElements());
+    }
+    ```
   - repository method
-  ```java
-  Page<Laptop> findAllByVendorAndDeletedIsFalse(String vendor, Pageable pageable);
-  ```
-  다만, repository method 의 반환 타입이 Page&lt;T&gt; 일 경우 pagination 정보를 포함하고 있는 객체로 반환하지만,
-  단순 부분 조회 목록을 반환하고자 할 경우 List&lt;T&gt; 타입으로 선언하여 사용 합니다.
-  ```java
-  List<Laptop> findAllByVendorAndDeletedIsFalse(String vendor, Pageable pageable);
-  ```
+    ```java
+    Page<Laptop> findAllByVendorAndDeletedIsFalse(String vendor, Pageable pageable);
+    ```
+    다만, repository method 의 반환 타입이 Page&lt;T&gt; 일 경우 pagination 정보를 포함하고 있는 객체로 반환하지만,
+    단순 부분 조회 목록을 반환하고자 할 경우 List&lt;T&gt; 타입으로 선언하여 사용 합니다.
+    ```java
+    List<Laptop> findAllByVendorAndDeletedIsFalse(String vendor, Pageable pageable);
+    ```
 
 - `POST` Body
 
@@ -322,7 +322,6 @@ pagination 의 요청 정보는 다음과 같습니다.
   조회의 정렬정보에 해당하는 `sort` 값은 컬럼의 정렬순서의 단위로 여러개가 지정되는 구조이며, JSONArray 의 문자열 포멧으로 지정하여 사용 합니다.   
   예를들어 "id 컬럼 오름차순", "displaySize 컬럼 내림차순" 의 정보를 전송할 경우 `['id,ASC','displaySize,DESC']` 으로 지정 합니다.   
   컬럼 이름은 Lower-camel 형식으로 사용되어야 하며, SQL 구문으로 사용 시 Upper-Underscore 형식으로 전환되어 사용 됩니다. (displaySize --> DISPLAY_SIZE)
-
 
   ```json
   {
@@ -355,8 +354,10 @@ pagination 의 요청 정보는 다음과 같습니다.
       return service.getPage(laptopReq, pageable);
   }
   ```
+## Properties
 
-pagination 의 기능은 `spring-data-commons` 을 사용함으로서, spring-jpa 에서 사용하는 기능과 동일하도록 구현되어 있습니다. 해당 설정을 그대로 이용합니다.
+pagination 의 기능은 `spring-data-commons` 을 사용함으로서, spring-jpa 에서 사용하는 기능과 동일하도록 구현되어 있습니다. 해당 설정을 그대로 이용합니다.   
+단, `pring.data.web.pageable.one-indexed-parameters` 의 설정은 지정하지 않더라도 `prunus-persistence-mybatis` 에서 기본 값을 `true` 로 지정합니다.
 
 ```yaml
 spring:
@@ -366,7 +367,8 @@ spring:
         default-page-size: 20 # 한 페이지당 건 수를 의미합니다. 기본값은 20 입니다.
         one-indexed-parameters: true # 페이지 번호를 1부터 시작할지 여부를 의미합니다.
                                      # spring-jpa 해당 옵션은 기본으로 false 이지만,
-                                     # 통상의 사용법에 따른 1부터 시작을 위해 기본 값을 true 로 지정합니다.
+                                     # 통상의 사용법에 따른 1부터 시작을 위해 기본 값을 true 로 사용 합니다.
+                                     # prunus-persistence-mybatis 사용시, 지정하지 않더라도 true 로 지정됩니다.
 ```
 
 ## 주의 사항
@@ -379,7 +381,7 @@ mapper method 의 반환 타입이 Page&lt;T&gt; 일 경우, pagination 정보�
 따라서 요청 값과는 별도로 내부 page number 값을 참조해야 할 경우 +1 처리하여 사용해야 합니다.   
 (* page number 값 key : `pageNumber`)
 
-- 반환 타입 반환 타입이 Page&lt;T&gt; 의 경우 데이터 예시
+- 반환 타입 반환 타입이 Page&lt;T&gt; 의 경우 데이터 예시 (pageNumber 가 '1' 일 경우)
 ```json
 {
   "content": [
