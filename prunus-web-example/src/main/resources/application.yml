@@ -1,0 +1,8 @@
+prunus:
+  web:
+    content-caching:
+      enabled: true # content-cashing 기능 사용 여부 (default : false)
+      enabled-response: true # response content-cashing 기능 사용 여부 (default : false)
+      excluded-uri-patterns:  # content-cashing uri 제외 항목
+        - /content/laptop/**
+        - '/**/modify/**'

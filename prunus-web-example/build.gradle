@@ -1,0 +1,4 @@
+dependencies {
+    implementation 'sdcit.prunus:prunus-web'
+    implementation 'commons-io:commons-io'
+}
