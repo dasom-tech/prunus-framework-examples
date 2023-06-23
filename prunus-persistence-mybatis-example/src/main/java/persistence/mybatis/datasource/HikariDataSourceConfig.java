@@ -12,8 +12,8 @@ public class HikariDataSourceConfig {
         return new HikariConfig();
     }
 
-    @Bean
-    @ConfigurationProperties(prefix="spring.datasource.hikari.tibero")
+//    @Bean
+//    @ConfigurationProperties(prefix="spring.datasource.hikari.tibero")
     public HikariConfig tibero() {
         return new HikariConfig();
     }

@@ -10,11 +10,11 @@ spring:
       jdbc-url: jdbc:h2:mem:prunus
       username: sa
       password:
-    tibero:
-      driver-class-name: com.tmax.tibero.jdbc.TbDriver
-      jdbc-url: jdbc:tibero:thin:@192.168.0.40:8629:tibero
-      username: sys
-      password: tibero
+#    tibero:
+#      driver-class-name: com.tmax.tibero.jdbc.TbDriver
+#      jdbc-url: jdbc:tibero:thin:@192.168.0.40:8629:tibero
+#      username: sys
+#      password: tibero
   data.web.pageable:
     default-page-size: 10
     one-indexed-parameters: true # page number 를 '1'부터 시작한다. (default : false, start at 0)
@@ -31,6 +31,9 @@ prunus:
     mybatis:
       audit.enabled: true
       pagination.enabled: true
-
+  web:
+    content-caching:
+      enabled: true
+      excluded-patterns: /h2/pageable/*,*/dto/*
 
 
