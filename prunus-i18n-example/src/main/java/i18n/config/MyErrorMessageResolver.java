@@ -4,13 +4,13 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.WebRequest;
-import prunus.i18n.web.ErrorMessageResolver;
+import prunus.web.exception.MessageResolver;
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class MyErrorMessageResolver implements ErrorMessageResolver {
+public class MyErrorMessageResolver implements MessageResolver {
     @Override
-    public String resolveErrorMessage(WebRequest webRequest, Throwable error) {
+    public String resolveMessage(WebRequest webRequest, Throwable error) {
         return error.getMessage() + "(에러 메세지를 수정할 수 있습니다.)";
     }
 
