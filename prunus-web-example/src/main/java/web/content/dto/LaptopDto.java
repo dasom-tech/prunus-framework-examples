@@ -6,7 +6,7 @@ import lombok.*;
 @Getter
 @Setter
 @AllArgsConstructor
-public class LaptopDto {
+public class LaptopDto extends CachedDto {
 
     private long id;
 

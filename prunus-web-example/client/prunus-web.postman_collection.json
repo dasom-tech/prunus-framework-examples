@@ -1,0 +1,134 @@
+{
+	"info": {
+		"_postman_id": "77a5784b-2931-4246-8eca-897091565105",
+		"name": "prunus-web",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4980272",
+		"_collection_link": "https://blue-eclipse-2818-1.postman.co/workspace/prunus~ad437c9f-3a83-4cb2-a3b5-c0bcef1983e2/collection/4980272-77a5784b-2931-4246-8eca-897091565105?action=share&creator=4980272&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "content",
+			"item": [
+				{
+					"name": "컨텐츠 캐싱 필터 제외 (조건 : /content/laptop/**)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\" : 1,\n  \"vendor\": \"samsung\",\n  \"displaySize\": 15\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/content/laptop/add",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"content",
+								"laptop",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "컨텐츠 캐싱 필터 제외 (조건 : /**/modify/**)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\" : 1,\n  \"vendor\": \"samsung\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/content/desktop/modify",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"content",
+								"desktop",
+								"modify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "컨텐츠 캐싱 필터 적용",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"laptop\": {\n    \"id\" : 1,\n    \"vendor\": \"samsung\",\n    \"displaySize\": 15\n  },\n  \"desktop\": {\n    \"id\" : 1,\n    \"vendor\": \"samsung\"\n  }\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/content/equipment/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"content",
+								"equipment",
+								"add"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "exception",
+			"item": [
+				{
+					"name": "임의 예외 발생",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/exception",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"exception"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

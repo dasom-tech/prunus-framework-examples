@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class DesktopDto {
+public class DesktopDto extends CachedDto {
 
     private long id;
 

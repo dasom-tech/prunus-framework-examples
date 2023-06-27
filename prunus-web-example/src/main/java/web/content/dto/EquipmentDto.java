@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class EquipmentDto {
+public class EquipmentDto extends CachedDto {
 
     private LaptopDto laptop;
 

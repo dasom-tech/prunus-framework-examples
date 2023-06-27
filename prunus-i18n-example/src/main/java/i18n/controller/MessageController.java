@@ -3,7 +3,7 @@ package i18n.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import prunus.core.PrunusMessage;
+import prunus.core.message.MessageSourceHolder;
 
 @RestController
 @RequestMapping("/message")
@@ -16,6 +16,6 @@ public class MessageController {
     @GetMapping
     public String getMessage() {
         // PrunusMessage 객체를 이용해서 messageSource에 접근할수 있습니다.
-        return PrunusMessage.getMessage("error.test");
+        return MessageSourceHolder.getMessage("error.test");
     }
 }

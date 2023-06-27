@@ -1,9 +1,7 @@
 package i18n.controller;
 
 import i18n.dto.I18nReq;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import prunus.core.PrunusMessage;
 
 import javax.validation.Valid;
 

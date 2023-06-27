@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "c057275b-9daa-4d20-b61b-8f3c1b511594",
-		"name": "i18n",
+		"_postman_id": "c35236f5-1be7-49f2-9ed8-a26e4c689f9f",
+		"name": "prunus-i18n",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "7781688"
+		"_exporter_id": "4980272",
+		"_collection_link": "https://blue-eclipse-2818-1.postman.co/workspace/prunus~ad437c9f-3a83-4cb2-a3b5-c0bcef1983e2/collection/4980272-c35236f5-1be7-49f2-9ed8-a26e4c689f9f?action=share&creator=4980272&source=collection_link"
 	},
 	"item": [
 		{
@@ -97,24 +98,6 @@
 					"port": "8080",
 					"path": [
 						"valid"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "사용자예외처리",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/exception",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"exception"
 					]
 				}
 			},
