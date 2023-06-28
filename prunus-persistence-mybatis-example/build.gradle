@@ -1,5 +1,6 @@
 dependencies {
     implementation 'sdcit.prunus:prunus-persistence-mybatis'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     runtimeOnly 'tmaxsoft.tibero:tibero6-jdbc:1.1'
     runtimeOnly 'com.h2database:h2'
 }

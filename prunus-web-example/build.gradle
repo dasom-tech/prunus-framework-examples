@@ -1,4 +1,5 @@
 dependencies {
     implementation 'sdcit.prunus:prunus-web'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'commons-io:commons-io'
 }
