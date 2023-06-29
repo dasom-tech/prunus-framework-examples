@@ -1,5 +1,6 @@
 package nexacro.adaptor;
 
+import com.nexacro.java.xapi.data.DataSet;
 import nexacro.adaptor.dto.Desktop;
 import nexacro.adaptor.dto.Equipment;
 import nexacro.adaptor.dto.Laptop;
@@ -14,6 +15,7 @@ import prunus.nexacro.adaptor.resolver.support.NexacroResult;
 import prunus.persistence.data.pagination.Pagination;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * nexacro clinet request http method 정책
@@ -29,7 +31,7 @@ public class AdaptorController {
     }
 
     @PostMapping("/resolver")
-    public NexacroResult resolverNormal(
+    public NexacroResult resolver(
             @VariableParam("id") String id,
             @VariableParam("name") String name,
             @VariableParam(name="seq", required = false) int seq,
@@ -44,6 +46,20 @@ public class AdaptorController {
                 .dataSet("ds_paging", equipment.getPagination())
                 .dataSet("ds_desktop", equipment.getDesktop())
                 .dataSet("laptops", equipment.getLaptops())
+                .build();
+    }
+
+    @PostMapping("/resolver/save")
+    public NexacroResult resolverSave(@DataSetParam("laptops") List<Laptop> laptops) {
+        List<Laptop> normal = laptops.stream().filter(laptop -> laptop.getRowType() == DataSet.ROW_TYPE_NORMAL).collect(Collectors.toList());
+        List<Laptop> inserted = laptops.stream().filter(laptop -> laptop.getRowType() == DataSet.ROW_TYPE_INSERTED).collect(Collectors.toList());
+        List<Laptop> updated = laptops.stream().filter(laptop -> laptop.getRowType() == DataSet.ROW_TYPE_UPDATED).collect(Collectors.toList());
+        List<Laptop> deleted = laptops.stream().filter(laptop -> laptop.getRowType() == DataSet.ROW_TYPE_DELETED).collect(Collectors.toList());
+        return NexacroResult.builder()
+                .dataSet("normal", normal)
+                .dataSet("inserted", inserted)
+                .dataSet("updated", updated)
+                .dataSet("deleted", deleted)
                 .build();
     }
 
