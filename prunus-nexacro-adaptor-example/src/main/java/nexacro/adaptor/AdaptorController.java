@@ -69,4 +69,19 @@ public class AdaptorController {
         Pageable pageable = equipment.getPagination().pageable();
         return service.getEquipment(equipment, pageable);
     }
+
+    @ResponseBody
+    @PostMapping("/converter/save")
+    public Equipment converterSave(@RequestBody Equipment equipment) {
+        List<Laptop> normal = equipment.getLaptops().stream().filter(laptop -> laptop.getRowType() == DataSet.ROW_TYPE_NORMAL).collect(Collectors.toList());
+        List<Laptop> inserted = equipment.getLaptops().stream().filter(laptop -> laptop.getRowType() == DataSet.ROW_TYPE_INSERTED).collect(Collectors.toList());
+        List<Laptop> updated = equipment.getLaptops().stream().filter(laptop -> laptop.getRowType() == DataSet.ROW_TYPE_UPDATED).collect(Collectors.toList());
+        List<Laptop> deleted = equipment.getLaptops().stream().filter(laptop -> laptop.getRowType() == DataSet.ROW_TYPE_DELETED).collect(Collectors.toList());
+        return Equipment.builder()
+                .normal(normal)
+                .inserted(inserted)
+                .updated(updated)
+                .deleted(deleted)
+                .build();
+    }
 }
