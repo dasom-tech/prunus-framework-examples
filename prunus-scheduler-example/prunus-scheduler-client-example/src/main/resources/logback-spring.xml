@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<configuration>
+    <include resource="logback-job-base.xml" />
+
+    <logger name="prunus" level="DEBUG" />
+    <logger name="scheduler.client" level="DEBUG" />
+</configuration>

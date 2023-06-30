@@ -1,4 +1,4 @@
-package fileupload;
+package scheduler.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,8 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author 조용상
  */
 @SpringBootApplication
-public class FileUploadApplication {
+public class SchedulerServerApplication {
     public static void main(String[] args) {
-        SpringApplication.run(FileUploadApplication.class, args);
+        SpringApplication.run(SchedulerServerApplication.class, args);
     }
 }

@@ -1,0 +1,197 @@
+{
+	"info": {
+		"_postman_id": "65b9d515-6f21-4646-9066-9375ad676198",
+		"name": "prunus-scheduler",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2459687",
+		"_collection_link": "https://blue-eclipse-2818-1.postman.co/workspace/prunus-framework~db052546-f13e-48ce-9d15-22a9ff4c1b5d/collection/2459687-65b9d515-6f21-4646-9066-9375ad676198?action=share&creator=2459687&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "prunus-scheduler-server",
+			"item": [
+				{
+					"name": "Job 생성/수정",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"jobDefinition\":{\n      \"name\":\"chotire\",\n      \"groupName\":\"prunus\",\n      \"jobClass\":\"prunus.scheduler.server.job.RestClientJob\",\n      \"durability\":true,\n      \"description\":null,\n      \"jobData\":{\n         \"age\":18\n      }\n   },\n   \"triggerDefinition\":{\n      \"name\":\"tname\",\n      \"groupName\":\"prunus\",\n      \"startAt\":1687934642308,\n      \"endAt\":null,\n      \"priority\":5,\n      \"jobData\":{\n         \"birthDay\": \"10/11\"\n      },\n      \"simpleSchedule\":{\n         \"interval\":30,\n         \"repeatCount\":-1\n      },\n      \"cronSchedule\":null\n   },\n   \"jobUri\":\"http://localhost:8089\",\n   \"httpMethod\":\"POST\",\n   \"enabled\":true\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/schedule",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"schedule"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Job 삭제",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jobKey\": {\n        \"name\": \"chotire\",\n        \"group\": \"prunus\"\n    },\n    \"triggerKey\": {\n        \"name\": \"tname\",\n        \"group\": \"prunus\"\n    }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/schedule",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"schedule"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Job 즉시실행",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jobId\": {\n        \"jobKey\": {\n            \"name\": \"chotire\",\n            \"group\": \"prunus\"\n        },\n        \"triggerKey\": {\n            \"name\": \"tname\",\n            \"group\": \"prunus\"\n        }\n    },\n    \"additionalData\": {\n        \"address\": \"suji-gu\"\n    }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/schedule/immediate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"schedule",
+								"immediate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "prunus-scheduler-client",
+			"item": [
+				{
+					"name": "Job 생성/수정",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"jobDefinition\":{\n      \"name\":\"chotire\",\n      \"groupName\":\"prunus\",\n      \"jobClass\":\"prunus.scheduler.server.job.RestClientJob\",\n      \"durability\":true,\n      \"description\":null,\n      \"jobData\":{\n         \"name\": \"yongsang\",\n         \"age\":18,\n         \"address\": \"suji-gu\"\n      }\n   },\n   \"triggerDefinition\":{\n      \"name\":\"tname\",\n      \"groupName\":\"prunus\",\n      \"startAt\":1687934642308,\n      \"endAt\":null,\n      \"priority\":5,\n      \"jobData\":{\n         \"birthDay\": \"10/11\"\n      },\n      \"simpleSchedule\":{\n         \"interval\":30,\n         \"repeatCount\":-1\n      },\n      \"cronSchedule\":null\n   },\n   \"jobUri\":\"http://localhost:8089/cleanup\",\n   \"httpMethod\":\"POST\",\n   \"enabled\":true\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8089/schedule",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8089",
+							"path": [
+								"schedule"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Job 삭제",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jobKey\": {\n        \"name\": \"chotire\",\n        \"group\": \"prunus\"\n    },\n    \"triggerKey\": {\n        \"name\": \"tname\",\n        \"group\": \"prunus\"\n    }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8089/schedule",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8089",
+							"path": [
+								"schedule"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Job 즉시실행",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jobId\": {\n        \"jobKey\": {\n            \"name\": \"chotire\",\n            \"group\": \"prunus\"\n        },\n        \"triggerKey\": {\n            \"name\": \"tname\",\n            \"group\": \"prunus\"\n        }\n    },\n    \"additionalData\": {\n        \"id\": \"chotire\"\n    }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8089/schedule/immediate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8089",
+							"path": [
+								"schedule",
+								"immediate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
