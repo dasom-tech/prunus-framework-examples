@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver # 사용자 환경에 맞게 수정
+    url: jdbc:h2:tcp://localhost/~/prunus/db/scheduler-server # 사용자 환경에 맞게 수정
+    username: sa
+  quartz:
+    job-store-type: jdbc # Quartz의 JobStore 유형
+    jdbc:
+      initialize-schema: never # 데이터베이스 스키마 초기화 여부 (always, never, embedded)
+    properties:
+      org.quartz.jobStore.class: org.springframework.scheduling.quartz.LocalDataSourceJobStore # JobStore 클래스 (LocalDataSourceJobStore 사용)
+logging:
+  level:
+    prunus: debug

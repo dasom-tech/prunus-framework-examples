@@ -1,0 +1,16 @@
+prunus:
+  scheduler:
+    client:
+      server: # prunus-scheduler-server REST API URI
+        schema: http
+        host: localhost
+        port: 8080
+        path: /schedule
+    job:
+      logging:
+        path: /Users/yongsang/prunus/job # Job API 별 파일 로깅 경로
+  web:
+    content-caching:
+      enabled: true # scheduler client 에서 HttpServletRequest body 를 읽으므로 web.content-caching.enabled 옵션을 활성화해야 합니다.
+server:
+  port: 8089

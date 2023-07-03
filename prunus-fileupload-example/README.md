@@ -104,7 +104,7 @@ spring:
 업로드된 파일을 조회합니다.
 
 #### 업로드 파일 삭제 (단건 및 멀티)- DELETE: /files/{id}/{backNumbers}   
-업로드 파일의 삭제 요청 API 로 HTTP Method **DELETE** 로 API 를 요청해야 합니다. 삭제 하고자 하는 파일의 id, backnumber 를 URL 경로에 넣고 요청합니다.   
+업@제 하고자 하는 파일의 id, backnumber 를 URL 경로에 넣고 요청합니다.   
 
 즉, 위 업로드 후 응답으로 받은 메지시로 삭제한다고 가정할 때 `files/d937a225-6c10-4dd3-a2d0-b9f8a9c149f2/zUmndFbT`
 와 같은 형태로 API 요청하면 됩니다.   

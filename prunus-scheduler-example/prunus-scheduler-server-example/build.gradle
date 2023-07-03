@@ -1,0 +1,5 @@
+dependencies {
+    implementation 'sdcit.prunus:prunus-scheduler-server'
+
+    runtimeOnly 'com.h2database:h2'
+}

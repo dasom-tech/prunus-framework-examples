@@ -1,0 +1,6 @@
+dependencies {
+    implementation 'sdcit.prunus:prunus-scheduler-client'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    runtimeOnly 'com.h2database:h2'
+}
