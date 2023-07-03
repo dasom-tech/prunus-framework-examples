@@ -7,7 +7,6 @@ import persistence.mybatis.dto.Equipment;
 import persistence.mybatis.dto.LaptopDto;
 import persistence.mybatis.dto.LaptopReq;
 import persistence.mybatis.service.h2.PersistenceMybatisService;
-import prunus.persistence.data.pagination.Pagination;
 
 import java.util.List;
 
@@ -59,8 +58,13 @@ public class PersistenceMybatisController {
         service.modify(laptopDto);
     }
 
-    @DeleteMapping("/{id}")
-    public void remove(@PathVariable String id) {
-        service.remove(id);
+    @PutMapping("/remove")
+    public void remove(@RequestBody LaptopDto laptopDto) {
+        service.remove(laptopDto);
+    }
+
+    @DeleteMapping("/{id}/{vendor}")
+    public void delete(@PathVariable Long id, @PathVariable String vendor) {
+        service.delete(id, vendor);
     }
 }

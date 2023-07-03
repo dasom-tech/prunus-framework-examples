@@ -52,7 +52,19 @@ public class PersistenceMybatisService {
         mapper.update(laptop);
     }
 
-    public void remove(String id) {
-        mapper.delete(id);
+    public void remove(LaptopDto laptopDto) {
+        Laptop laptop = Laptop.builder()
+                .id(laptopDto.getId())
+                .vendor(laptopDto.getVendor())
+                .build();
+        mapper.remove(laptop);
+    }
+
+    public void delete(Long id, String vendor) {
+        Laptop laptop = Laptop.builder()
+                .id(id)
+                .vendor(vendor)
+                .build();
+        mapper.delete(laptop);
     }
 }

@@ -36,9 +36,15 @@
              , DISPLAY_SIZE = #{displaySize}
          WHERE ID           = #{id}
     </update>
-    <delete id="delete" parameterType="string">
+    <update id="remove" parameterType="persistence.mybatis.entity.Laptop">
         UPDATE LAPTOP
            SET DELETED = true
          WHERE ID      = #{id}
+           AND VENDOR  = #{vendor}
+    </update>
+    <delete id="delete" parameterType="persistence.mybatis.entity.Laptop">
+        DELETE LAPTOP
+         WHERE ID      = #{id}
+           AND VENDOR  = #{vendor}
     </delete>
 </mapper>
