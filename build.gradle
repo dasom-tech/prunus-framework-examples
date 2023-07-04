@@ -7,7 +7,7 @@ allprojects {
     version = "${prunusVersion}" as Object
 
     repositories {
-        mavenLocal()
+//        mavenLocal()
         maven {
             url 'http://nexus.sdcit.co.kr/nexus/content/groups/public/'
             allowInsecureProtocol true
@@ -20,8 +20,8 @@ subprojects {
     apply plugin: 'java-library'
     apply plugin: 'sdcit.prunus'
 
-    sourceCompatibility = '8'
-    targetCompatibility = '8'
+    sourceCompatibility = '11'
+    targetCompatibility = '11'
 
     dependencies {
         implementation 'org.springframework.boot:spring-boot-starter'

@@ -7,7 +7,7 @@ pluginManagement {
         }
     }
     repositories {
-        mavenLocal()
+//        mavenLocal()
         maven {
             url 'http://nexus.sdcit.co.kr/nexus/content/groups/public/'
             allowInsecureProtocol true
@@ -28,3 +28,5 @@ include 'prunus-i18n-example'
 include 'prunus-scheduler-example:prunus-scheduler-server-example'
 include 'prunus-scheduler-example:prunus-scheduler-client-example'
 include 'prunus-net-example'
+include 'prunus-multidatasource-example'
+

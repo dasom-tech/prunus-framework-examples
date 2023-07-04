@@ -1,0 +1,4 @@
+dependencies {
+    implementation 'sdcit.prunus:prunus-multidatasource'
+    implementation 'com.h2database:h2'
+}
