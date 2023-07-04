@@ -1,5 +1,6 @@
 package web.exception;
 
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
@@ -17,15 +18,15 @@ import java.util.List;
 
 @ControllerAdvice
 public class AControllerAdvice extends MessageResolvedResponseEntityExceptionHandler implements Ordered {
-    public AControllerAdvice(List<ExceptionMessageResolver> messageResolvers, BasicErrorController basicErrorController, ExceptionMessage errorMessageObject) {
-        super(basicErrorController, messageResolvers, errorMessageObject);
+    public AControllerAdvice(List<ExceptionMessageResolver> messageResolvers, BasicErrorController basicErrorController, ExceptionMessage errorMessageObject, ServerProperties serverProperties) {
+        super(basicErrorController, messageResolvers, errorMessageObject, serverProperties);
     }
     @ExceptionHandler({BaseException.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Object handleErrorException(BaseException exception, WebRequest request) {
-        ExceptionMessage exceptionMessage = getExceptionMessage(request, exception);
-        return this.isJsonType(request) ? handleExceptionInternal(exception, exceptionMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request) :
-                createExceptionView(request, exceptionMessage.getMessage());
+        ExceptionMessage exceptionMessage = getExceptionMessage(request, exception, HttpStatus.INTERNAL_SERVER_ERROR);
+        return this.isHtmlType(request) ? createExceptionView(request, exceptionMessage.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR) :
+                handleExceptionInternal(exception, exceptionMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
     @Override
