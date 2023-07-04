@@ -20,3 +20,11 @@ spring:
   messages:
     basename: messages/message, messages/valid
     encoding: UTF-8
+
+server:
+  error:
+    include-exception: true
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: always
+

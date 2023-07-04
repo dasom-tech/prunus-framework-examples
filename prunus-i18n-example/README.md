@@ -22,20 +22,18 @@
 |prunus.i18n.cookie-secure|쿠키 보안 여부|false|
 
 ## 설정
-`prunus-i18n` 은 Spring Boot 에서 자동생성되는 messageSource를 기준으로 통합됩니다.
-`spring.messages` 설정만으로 사용이 가능하며 `prunus.i18n` 설정과 조합하여
-MessageSource, LocaleResolver, Locale API 가 자동 생성됩니다.
-`messageSource`를 사용하지 않는 경우 `prunus-fromework`에서 사용하는 `messageSource`가 생성됩니다.
-
-`perperties` 파일 사용시 아래와 같이 간단이 파일 위치만 지정하면 설정이 완료됩니다.
+`prunus-i18n`은 `Spring`에서 자동생성되는 `messageSource`를 기준으로 통합됩니다.
+`messageSource`로 사용할 properties 파일 위치만 `spring.messages.basename`에 지정하면 바로 사용이 가능하며
+`ResourceBundleMessageSource`, `SessionLocaleResolver`, `I18nController` bean이 등록됩니다.
 ```yaml
 spring:
   messages:
     basename: messages/message,messages/valid  # properties 파일 위치(validation 파일 포함)
 ```
+### MessageSource 변경
 `messageSource`는 spring 기본설정인 `ResourceBundleMessageSource`가 사용됩니다.
-사용자가 직접 `messageSource`를 작성하는 경우 `AbstractResourceBasedMessageSource`를 상속한
-Component를 등록해 주시면 됩니다.
+`properties`타입 이외의 다른 유형을 사용할 경우 아래와 같은 형태로 `@Component`를 등록하면 
+기본 `messageSource`가 무시되고 사용자가 등록한 `messageSource`가 사용됩니다.
 ```java
 public class DatabaseMessageSource extends AbstractResourceBasedMessageSource {
   ...
@@ -49,24 +47,27 @@ public class DatabaseMessageSource extends ResourceBundleMessageSource {
   ...
 }
 ```
+### LocaleResolver 변경
+`Spring`에서는 `FixedLocaleResolver`, `AcceptHeaderLocaleResolver`, `SessionLocaleResolver`, `CookieLocaleResolver`
+4가지 `localeResolver`를 제공하고 `SessionLocaleResolver`가 기본설정됩니다.
+`prunus.i18n.locale-resolve-type` properties 설정으로 변경이 가능합니다.
 
-## MessageSourceHolder
-`MessageSourceHolder`는 static method를 통해 messageSource, messageSourceAccessor 주입 없이
-바로 `messageSource`를 사용가능 하도록 합니다.
-```
-MessageSourceHolder.getMessage("prunus.error"));
-MessageSourceHolder.getMessage("prunus.error", Locale.KOREA));
-```
-
-## Locale API
-prunus.i18n.locale' 설정을 통해 로케일 변경 API 를 제공합니다.
-### 로케일 변경(Default)
+### Locale API
+`prunus` properties 설정을 통해 로케일 변경 API 를 제공합니다.
+설정을 통해 endpoint, parameter-name을 변경할 수 있습니다.
+기본 설정은 아래와 같은 요청으로 `locale`을 변경할 수 있습니다.
 ```http request
 POST /locale
-Content-Type: application/x-www-form-urlencoded
-Parameters: lang
+Content-Type: application/json
+body: { "lang" : "ko" }
 ```
-설정을 통해 endpoint, parameter-name을 변경할 수 있습니다.
+
+## MessageSourceHolder
+`MessageSourceHolder`는 static method를 통해 `messageSource`나 `messageSourceAccessor` 주입 없이
+바로 사용할수 있도록 지원합니다.
+```
+MessageSourceHolder.getMessage("prunus.error"));
+MessageSourceHolder.getMessage("prunus.error", new Object[]{}, Locale.KOREA));
 ```
 
 ## Test Client
