@@ -50,7 +50,8 @@ public class AdaptorController {
     }
 
     @PostMapping("/resolver/save")
-    public NexacroResult resolverSave(@DataSetParam("laptops") List<Laptop> laptops) {
+    public NexacroResult resolverSave(
+            @DataSetParam("laptops") List<Laptop> laptops) {
         List<Laptop> normal = laptops.stream().filter(laptop -> laptop.getRowType() == DataSet.ROW_TYPE_NORMAL).collect(Collectors.toList());
         List<Laptop> inserted = laptops.stream().filter(laptop -> laptop.getRowType() == DataSet.ROW_TYPE_INSERTED).collect(Collectors.toList());
         List<Laptop> updated = laptops.stream().filter(laptop -> laptop.getRowType() == DataSet.ROW_TYPE_UPDATED).collect(Collectors.toList());
