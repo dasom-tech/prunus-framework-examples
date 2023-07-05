@@ -60,11 +60,11 @@ public class PersistenceMybatisController {
 
     @PutMapping("/remove")
     public void remove(@RequestBody LaptopDto laptopDto) {
-        service.remove(laptopDto);
+        service.remove(laptopDto.getId());
     }
 
-    @DeleteMapping("/{id}/{vendor}")
-    public void delete(@PathVariable Long id, @PathVariable String vendor) {
-        service.delete(id, vendor);
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
     }
 }

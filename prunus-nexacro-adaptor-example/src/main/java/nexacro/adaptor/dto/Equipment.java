@@ -1,5 +1,6 @@
 package nexacro.adaptor.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.*;
 import prunus.nexacro.adaptor.resolver.annotation.DataSetParam;
 import prunus.persistence.data.pagination.Pagination;
@@ -15,8 +16,10 @@ public class Equipment {
     private String id;
     private String name;
     private int seq;
-    @DataSetParam(name="ds_paging")
+    @JsonAlias("ds_paging")
+    @DataSetParam("ds_paging")
     private Pagination pagination;
+    @JsonAlias("ds_desktop")
     @DataSetParam("ds_desktop")
     private Desktop desktop;
     private List<Laptop> laptops;

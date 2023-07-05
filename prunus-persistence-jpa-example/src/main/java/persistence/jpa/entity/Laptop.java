@@ -26,12 +26,12 @@ public class Laptop extends AuditEntity {
     @Setter
     private Boolean deleted;
 
-    public void updateSpec(String vendor, int displaySize) {
+    public void updateVendorAndDisplaySize(String vendor, int displaySize) {
         this.vendor = vendor;
         this.displaySize = displaySize;
     }
 
-    public void updateDeleted(Boolean deleted) {
+    public void remove(Boolean deleted) {
         this.deleted = deleted;
     }
 }

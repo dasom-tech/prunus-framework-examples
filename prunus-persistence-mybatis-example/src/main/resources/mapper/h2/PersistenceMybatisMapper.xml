@@ -45,6 +45,5 @@
     <delete id="delete" parameterType="persistence.mybatis.entity.Laptop">
         DELETE LAPTOP
          WHERE ID      = #{id}
-           AND VENDOR  = #{vendor}
     </delete>
 </mapper>

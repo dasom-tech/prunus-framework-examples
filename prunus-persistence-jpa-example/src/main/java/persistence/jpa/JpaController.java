@@ -56,9 +56,15 @@ public class JpaController {
         return service.modify(laptopDto);
     }
 
+    @PutMapping("/remove")
+    @ResponseStatus(HttpStatus.OK)
+    public void remove(@RequestBody LaptopDto laptopDto) throws Exception {
+        service.remove(laptopDto.getId());
+    }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void remove(@PathVariable long id) throws Exception {
-        service.remove(id);
+    public void delete(@PathVariable long id) {
+        service.delete(id);
     }
 }

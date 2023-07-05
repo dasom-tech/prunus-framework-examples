@@ -246,6 +246,25 @@
 		{
 			"name": "Audit 정보 추가 / 정보 삭제 처리",
 			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/remove",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"remove"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Audit 정보 추가 / 정보 삭제",
+			"request": {
 				"method": "DELETE",
 				"header": [],
 				"url": {
