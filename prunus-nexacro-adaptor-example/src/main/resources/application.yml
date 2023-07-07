@@ -1,4 +1,17 @@
 spring:
+  sql:
+    init:
+      mode: embedded # always, embedded, never
+      data-locations: classpath:db/data.sql
+      schema-locations: classpath:db/schema.sql
+  h2.console:
+    enabled: true
+  datasource:
+    hikari:
+      driver-class-name: org.h2.Driver
+      jdbc-url: jdbc:h2:mem:example
+      username: sa
+      password:
   data:
     web:
       pageable:
@@ -10,3 +23,10 @@ prunus:
         enabled: true
       message-converter:
         enabled: true
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations:
+    - classpath*:mapper/**/*.xml
+  type-aliases-package: nexacro.adaptor.employee

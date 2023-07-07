@@ -50,13 +50,17 @@ public class JpaService {
 
     public LaptopDto modify(LaptopDto laptopDto) throws Exception {
         Laptop laptop = repository.findById(laptopDto.getId()).orElseThrow(() -> new Exception("not found"));
-        laptop.updateSpec(laptopDto.getVendor(), laptopDto.getDisplaySize());
+        laptop.updateVendorAndDisplaySize(laptopDto.getVendor(), laptopDto.getDisplaySize());
         return LaptopDto.of(repository.save(laptop));
     }
 
     public void remove(long id) throws Exception {
         Laptop laptop = repository.findById(id).orElseThrow(() -> new Exception("not found"));
-        laptop.updateDeleted(Boolean.TRUE);
+        laptop.remove(Boolean.TRUE);
         repository.save(laptop);
+    }
+
+    public void delete(long id) {
+        repository.deleteById(id);
     }
 }

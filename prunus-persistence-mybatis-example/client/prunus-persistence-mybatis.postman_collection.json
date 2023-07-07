@@ -252,6 +252,35 @@
 		{
 			"name": "Audit 정보 추가 / 정보 삭제 처리",
 			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": 101\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/h2/remove",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"h2",
+						"remove"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Audit 정보 추가 / 정보 삭제",
+			"request": {
 				"method": "DELETE",
 				"header": [],
 				"url": {
