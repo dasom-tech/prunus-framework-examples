@@ -103,10 +103,10 @@ prunus-multidatasource 내부에는 이미 공개키/개인키를 가지고 있�
 
 하지만 프로젝트 내부에서 별도로 생성한 공개키/개인키를 바탕으로 암복화하고 싶을 경우 prunus-multidatasource CLI 를 통해서 키를 생성할 수 있습니다.
 
-1. .gradle 디렉토리 하위에서 `prunus-fileupload-2.1.0-SNAPSHOT.jar` 파일이 있는 디렉토리로 Console (CMD) 에서 이동합니다.
+1. .gradle 디렉토리 하위에서 `prunus-fileupload-[version].jar` 파일이 있는 디렉토리로 Console (CMD) 에서 이동합니다.
 2. 다음 명령을 통해 공개키/개인키를 생성합니다.
 ```shell
-java -jar prunus-multidatasource-2.1.0-SNAPSHOT-all.jar keygen 512
+java -jar prunus-multidatasource-2.1.0-SNAPSHOT.jar keygen 512
 ```
 3. 명령을 실행하면 다음과 같이 공개키와 개인키가 생성됩니다.
 ```
@@ -115,7 +115,7 @@ PrivateKey=MIIBVAIBADANBgkqhkiG9w0BAQEFAASCAT4wggE6AgEAAkEAzzGa20nCdPEQoHMNw4jKP
 ```
 4. 발급된 공개키로 다음 명령을 실행하여 암호화 합니다. 데이터소스 연결에 필요한 username 을 암호환 한다고 한다면 다음과 같이 매개변수를 전달합니다.
 ```shell
-java -jar prunus-multidatasource-2.1.0-SNAPSHOT-all.jar enc -k MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAM8xmttJwnTxEKBzDcOIyj1YByqc0AV8b/PRuDICzlePlc31EsgFjagGuth1pIuusUrQjATJiEyKm5FRxNvqJ+ECAwEAAQ== -t chotire
+java -jar prunus-multidatasource-2.1.0-SNAPSHOT.jar enc -k MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAM8xmttJwnTxEKBzDcOIyj1YByqc0AV8b/PRuDICzlePlc31EsgFjagGuth1pIuusUrQjATJiEyKm5FRxNvqJ+ECAwEAAQ== -t chotire
 ```
 `enc` 명령 이후 `-k` 는 위에서 발급받은 공개키 (PublicKey) 를 전달하고 `-t` 에 암호화할 문자열을 입력합니다.
 
@@ -156,7 +156,7 @@ prunus:
 프로젝트 내부의 공개키/개인키가 불필요하고 prunus-multidatasource 가 제공하는 기본 키를 기반으로 암호화하려면 `enc` 명령에서 `-k` 
 옵션을 빼고 실행하면 됩니다.
 ```shell
-java -jar prunus-multidatasource-2.1.0-SNAPSHOT-all.jar enc -t chotire
+java -jar prunus-multidatasource-2.1.0-SNAPSHOT.jar enc -t chotire
 ```
 prunus-multidatasource 가 제공하는 키로 암호화했을 경우 `prunus.multi-datasource.private-key` 프로퍼티를 추가할 필요가 없습니다.
 
