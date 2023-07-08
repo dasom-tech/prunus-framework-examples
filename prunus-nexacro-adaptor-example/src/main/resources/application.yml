@@ -10,3 +10,5 @@ prunus:
         enabled: true
       message-converter:
         enabled: true
+      data-set:
+        column-case: lower-camel # lower-camel, lower-underscore, lower-hyphen, upper-camel, upper-underscore

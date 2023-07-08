@@ -1,17 +1,19 @@
 package nexacro.adaptor;
 
 import com.nexacro.java.xapi.data.DataSet;
+import com.nexacro.uiadapter.spring.core.annotation.DataSetParam;
+import com.nexacro.uiadapter.spring.core.annotation.VariableParam;
+import com.nexacro.uiadapter.spring.core.annotation.VariableSetParam;
+import com.nexacro.uiadapter.spring.core.data.NexacroResult;
 import nexacro.adaptor.dto.Desktop;
 import nexacro.adaptor.dto.Equipment;
 import nexacro.adaptor.dto.Laptop;
+import nexacro.adaptor.dto.Tablet;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
-import prunus.nexacro.adaptor.resolver.annotation.DataSetParam;
-import prunus.nexacro.adaptor.resolver.annotation.VariableParam;
-import prunus.nexacro.adaptor.resolver.support.NexacroResult;
 import prunus.persistence.data.pagination.Pagination;
 
 import java.util.List;
@@ -35,6 +37,7 @@ public class AdaptorController {
             @VariableParam("id") String id,
             @VariableParam("name") String name,
             @VariableParam(name="seq", required = false) int seq,
+            @VariableSetParam Tablet tablet,
             @DataSetParam("laptops") List<Laptop> laptops,
             @DataSetParam(name="ds_desktop", required = false) Desktop desktop,
             @DataSetParam("ds_paging") Pagination pagination) {
@@ -43,6 +46,7 @@ public class AdaptorController {
         return NexacroResult.builder()
                 .variable("id", equipment.getId())
                 .variable("name", equipment.getName())
+                .variableSet(tablet)
                 .dataSet("ds_paging", equipment.getPagination())
                 .dataSet("ds_desktop", equipment.getDesktop())
                 .dataSet("laptops", equipment.getLaptops())

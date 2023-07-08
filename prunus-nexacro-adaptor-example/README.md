@@ -23,6 +23,7 @@ Content-Type 별 data 형식은 다음과 같습니다. (형식만 다를 뿐 �
           <Parameter id="id">paramId</Parameter>
           <Parameter id="name">paramName</Parameter>
           <Parameter id="seq">1</Parameter>
+          <Parameter id="displaySize">10</Parameter>
      </Parameters>
      <Dataset id="ds_paging">
           <ColumnInfo>
@@ -168,6 +169,11 @@ Content-Type 별 data 형식은 다음과 같습니다. (형식만 다를 뿐 �
       "id": "seq",
       "type": "int",
       "value": 1
+    },
+    {
+      "id": "displaySize",
+      "type": "int",
+      "value": 10
     }
   ]
 }
@@ -179,6 +185,7 @@ Content-Type 별 data 형식은 다음과 같습니다. (형식만 다를 뿐 �
     "id": "20230405",
     "name": "computer",
     "seq": 1,
+    "displaySize": 10,
     "ds_paging" : [
       {
         "page": 1,
@@ -213,7 +220,7 @@ http-request 으로 요청된 정보는 Controller method 에 선언된 argument
 
 ## MethodArgumentResolver
 
-- **@VariableParam**   
+- ### @VariableParam   
   단일 값을 전송 받을 경우 사용하며, `name` 속성에 따라 클라이언트에서 전송된 전문의 해당 값으로 받아옵니다.   
   속성은 다음과 같은 사항으로 사용합니다.
 
@@ -222,14 +229,18 @@ http-request 으로 요청된 정보는 Controller method 에 선언된 argument
   |name or value|지정된 값에 대응하는 클라이언트 전문의 값을 이름으로 판별 합니다.|없음|O|
   |required|클라이언트로 부터 전달된 전문의 값의 필수 여부를 지정합니다.|true|X|
 
-- **@DataSetParam**   
+
+- ### @VariableSetParam
+  단일 값들을 전송 받을 경우 사용하며, `@VariableSetParam` 으로 선언된 DTO 객체의 field 기준으로 해당하는 단일 값들을 전송 받을 경우 사용합니다.
+
+- ### @DataSetParam   
   집합 개념의 값을 전송 받을 경우 사용하며, 속성 값은 @VariableParam 과 동일하게 사용합니다.   
   값이 목록형(List&lt;E&gt;) 으로 전송되었다 하더라도, argument type 이 단일 객체 타입(E) 으로 선언되어 있을 경우는, 특별하게 발생되는 예외 없이 타입이 (E) 형태로 동일함을 인지하고, 단일 값으로 자동으로 수신 됩니다.   
   부분범위 조회를 위한 정보를 수신하기 위해서는 `Pagination` class type 의 argument 를 선언하여 사용 합니다.   
 
 
 - Response result 처리   
-  `NexacroResult.builder() ... build()` 형식으로 `variable`, `dataSet` 메서드의 chaining 사용을 통해 개별 값을 지정하여 반환 합니다.   
+  `NexacroResult.builder() ... build()` 형식으로 `variable`, `variableSet`, `dataSet` 메서드의 chaining 사용을 통해 개별 값을 지정하여 반환 합니다.   
   `NexacroResult` 는 DTO class 가 아니며, ReturnValueResolver 를 통해 View 로 반환하기 위한 반환 전용 클래스 입니다.
    따라서, Controller Class 에 해당하는 @RestController 와 Method 에 해당하는 `@ResponseBody` 어노테이션를 선언하지 않아야 합니다.
 
@@ -243,6 +254,8 @@ public NexacroResult resolverNormal(
         @VariableParam("name") String name,
         // 단일 값이며, name 속성은 필수로 지정 하여 "seq" 라는 명칭으로 판별 합니다. null 일 경우를 허용합니다.
         @VariableParam(name="seq", required = false) int seq,
+        // 단일 값들이며, Tablet 클래스내의 field 마다 해당하는 단일 값을 수용합니다.
+        @VariableSetParam Tablet tablet,
         // 집합 값이며, name 속성은 필수로 지정 하여 "laptops" 라는 명칭으로 판별 합니다. null 일 경우 예외를 발생합니다.
         @DataSetParam("laptops") List<Laptop> laptops,
         // 집합 값이며, name 속성은 지정 하여 "ds_desktop" 라는 명칭으로 판별 합니다. null 일 경우를 허용합니다.
@@ -254,6 +267,7 @@ public NexacroResult resolverNormal(
     return NexacroResult.builder()
             .variable("id", equipment.getId())
             .variable("name", equipment.getName())
+            .variableSet(tablet)
             .dataSet("ds_paging", equipment.getPagination())
             .dataSet("ds_desktop", equipment.getDesktop())
             .dataSet("laptops", equipment.getLaptops())

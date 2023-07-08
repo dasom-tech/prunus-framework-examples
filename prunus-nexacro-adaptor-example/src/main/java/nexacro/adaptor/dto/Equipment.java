@@ -1,8 +1,8 @@
 package nexacro.adaptor.dto;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.nexacro.uiadapter.spring.core.annotation.DataSetParam;
 import lombok.*;
-import prunus.nexacro.adaptor.resolver.annotation.DataSetParam;
 import prunus.persistence.data.pagination.Pagination;
 
 import java.util.List;
