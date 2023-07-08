@@ -1,0 +1,33 @@
+prunus:
+  multi-datasource:
+    primary: student
+    strict: true
+    p6spy:
+      enabled: true
+    datasources:
+      student:
+        driver-class-name: org.h2.Driver
+        url: jdbc:h2:mem:student
+        username: sa
+        p6spy: true
+        init:
+          schema: schema-student.sql
+      teacher:
+        driver-class-name: org.h2.Driver
+        url: jdbc:h2:mem:teacher
+        username: sa
+        p6spy: true
+        init:
+          schema: schema-teacher.sql
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false # JPA 를 사용하는 프로젝트는 반드시 open-in-view 속성을 false 로 지정하세요.
+logging:
+  level:
+    prunus: debug
+    org.springframework.transaction: debug
+    org.springframework.jdbc.datasource: debug
+    org.springframework.jdbc.support: debug
+    com.zaxxer.hikari.pool.HikariPool: debug
