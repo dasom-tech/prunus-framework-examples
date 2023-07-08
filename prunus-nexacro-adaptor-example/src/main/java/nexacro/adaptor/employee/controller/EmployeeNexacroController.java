@@ -1,13 +1,13 @@
 package nexacro.adaptor.employee.controller;
 
+import com.nexacro.uiadapter.spring.core.annotation.VariableParam;
+import com.nexacro.uiadapter.spring.core.data.NexacroResult;
 import lombok.extern.slf4j.Slf4j;
 import nexacro.adaptor.employee.domain.Employee;
 import nexacro.adaptor.employee.service.EmployeeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import prunus.nexacro.adaptor.resolver.annotation.VariableParam;
-import prunus.nexacro.adaptor.resolver.support.NexacroResult;
 
 import java.util.Map;
 
