@@ -16,6 +16,6 @@ public class MessageController {
     @GetMapping
     public String getMessage() {
         // PrunusMessage 객체를 이용해서 messageSource에 접근할수 있습니다.
-        return MessageSourceHolder.getMessage("error.test");
+        return MessageSourceHolder.getMessage("error.test", new String[] {"i18n"});
     }
 }

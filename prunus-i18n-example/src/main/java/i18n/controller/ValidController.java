@@ -11,6 +11,7 @@ public class ValidController {
 
     /**
      * I18nReq 객체의 유효성을 검사합니다.
+     * 유효성검사 메제지에 대한 다국어 처리
      * @param i18nReq 요청정보
      * @return 요청정보
      */

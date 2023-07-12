@@ -23,8 +23,6 @@ spring:
 
 server:
   error:
-    include-exception: true
-    include-message: always
-    include-binding-errors: always
-    include-stacktrace: always
+    include-message: always  # 에러메세지 출력
+    include-binding-errors: always  # binding 에러메세지 출력
 
