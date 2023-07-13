@@ -6,3 +6,11 @@ prunus:
       excluded-uri-patterns:  # content-cashing uri 제외 항목
         - /content/laptop/**
         - '/**/modify/**'
+
+
+server:
+  error:
+    include-exception: true
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: never

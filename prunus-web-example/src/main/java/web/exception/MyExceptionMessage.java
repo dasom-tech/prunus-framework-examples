@@ -1,4 +1,4 @@
-package i18n;
+package web.exception;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +20,11 @@ public class MyExceptionMessage extends ExceptionMessage {
 
     @Override
     protected boolean isIncludeDefaultAttribute() {
+        /**
+         * Default : true
+         * true 설정시 Spring 설정(application.yml의 server.error)에 따라 메세지 표시
+         * false 설정시 Spring 설정을 무시하고 message만 표시
+         */
         return false;
     }
 }
