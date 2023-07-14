@@ -37,7 +37,7 @@ public class MyException extends BaseException {
 ```
 
 ## 오류 메세지
-`prunus-web`의 기본 오류메세지는 `Spring`과 동일합니다.
+`prunus-web`의 기본 오류메세지는 `Spring`과 동일하게 나타나며
 `server.error` properties 속성에 따라 아래와 같은 형태로 표시합니다.
 ```json
 {
@@ -61,9 +61,9 @@ server:
 ```
 ## 오류 메세지 형태 변경
 메세지 형태를 변경하고 싶은 경우 `ExceptionMessage`를 상속한 `@Component` Bean 객체를 생성합니다.
-생성한 객체의 맴버변수가 오류메세지 항목에 포함되고 `setExceptionMessage`메소드를 반드시 `Override`하여 맴버변수 값을 설정해 주어야 합니다.
-`ExceptionMessage`가 가지고 있는 멤버변수를 응답메세지에서 제외하고 싶은 경우 `isIncludeDefaultAttribute`메소드 리턴값을 `false`로 `Override`하면
-message 항목을 제외한 모든 항목이 응답메세지에서 표시되지 않습니다. 이때 Spring의 `server.error` properties 속성은 무시됩니다.
+생성한 객체의 맴버변수가 오류메세지 항목에 포함되고 `setExceptionMessage`메소드를 반드시 `Override`하여 해당변수 값을 설정해 주어야 합니다.
+상속받은 `ExceptionMessage`가 가지고 있는 멤버변수를 메세지에서 제외하고 싶은 경우 `isIncludeDefaultAttribute`메소드 리턴값을 `false`로 `Override`하면
+"message" 항목을 제외한 모든 항목이 응답메세지에서 표시되지 않습니다. 이때는 Spring의 `server.error` properties 설정이 무시됩니다.
 ```java
 @Getter @Setter
 @Component
@@ -93,9 +93,9 @@ public class MyExceptionMessage extends ExceptionMessage {
 ## 오류메세지의 "message" text 변경
 오류메세지의 "message" 항목은 `BaseException`객체를 기준으로 해당 예외객체의 "message"내용이 표시되고
 내용을 변경하고 싶은 경우 `ExceptionMessageResolver`인터페이스를 통해 처리가 가능합니다.
-`ExceptionMessageResolver`의 경우 여러개 등록이 가능하고 해당 객체의 `supports` 메소드를 `Override`하여 처리가능한 조건을 설정합니다.
-여러개의 `Resolver`이 있는 경우 `@Order` Annotation에 의해 우선순위가 결정되고 `supports` 메소드 조건에 만족하면 나머지는 무시됩니다.
-아래 예제는 `MyException`이라는 사용자예외를 등록하고 해당 예외가 발생한 경우 출력되는 메세지를 변경하는 부분입니다.
+`ExceptionMessageResolver`의 경우 여러개 등록이 가능하고 해당 객체의 `supports` 메소드를 `Override`하여 처리가능한 조건을 설정해야 합니다.
+여러개의 `Resolver`가 있는 경우 `@Order` Annotation에 의해 우선순위가 결정되고 `supports` 메소드 조건에 만족하는 `Resolver`를 순서대로 찾습니다.
+아래 예제는 `MyException`이라는 사용자예외를 가장 높은 우선순위로 등록하고 해당 예외가 발생한 경우 출력되는 메세지를 변경하는 부분입니다.
 ```java
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Component
@@ -114,7 +114,7 @@ public class MyExceptionMessageResolver implements ExceptionMessageResolver {
 
 ## 주의 사항
 ### @ControllerAdvice
-`prunus-web`의 `@ControllerAdvice`는 `BaseException` 및 `@RequestMapping`에 대한 `Exception` 메세지 처리를 포함하고 있습니다.
+`prunus-web`은 `@ControllerAdvice`를 통해 `BaseException` 및 `@RequestMapping`에 대한 `Exception` 메세지 처리를 포함하고 있습니다.
 만약 `prunus-web`에서 처리하는 예외를 프로젝트 내부에서 다른 방식으로 처리하고자 원한다면
 사용자 정의 `@ControllerAdvice` 생성하고 `@Order` Annotation 으로 우선 순위를 높여 먼저 처리되게 할 수 있습니다.
 이렇게 하면 기본 에러 처리대신 사용자 정의 에러 처리가 가능합니다.

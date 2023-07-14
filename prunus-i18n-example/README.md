@@ -5,7 +5,7 @@
 
 ## Features
 * MessageSource 통합
-* MessageSourceHolder 제공
+* MessageSourceHolder
 * Locale 변경 API 제공
 
 ## Properties
@@ -21,7 +21,7 @@
 |prunus.i18n.cookie-domain|쿠키 도메인||
 |prunus.i18n.cookie-secure|쿠키 보안 여부|false|
 
-## 설정
+## 구성방법
 `prunus-i18n`은 `Spring Boot`에서 자동생성되는 `messageSource`를 기준으로 통합되며
 `messageSource`로 사용할 소스파일(properties) 위치만 `spring.messages.basename`에 지정하면 바로 사용이 가능합니다.
 자동구성을 통해 `MessageSourceHolder`, `ResourceBundleMessageSource`, `SessionLocaleResolver`, `I18nController`등이 bean으로 등록됩니다.
@@ -32,25 +32,28 @@ spring:
 ```
 ### MessageSource 변경
 `messageSource`는 spring 기본설정인 `ResourceBundleMessageSource`가 사용됩니다.
-`properties`타입 이외의 다른 유형을 사용할 경우 아래와 같은 형태로 `@Component`를 등록하면 
-기본 `messageSource`가 무시되고 사용자가 등록한 `messageSource`가 사용됩니다.
+`properties`타입 이외의 다른 유형을 사용할 경우 아래와 같은 형태로 `messageSource`를 구현하고
+`@Component` Bean으로 등록하여 사용할 수 있습니다.
 ```java
+@Component
 public class DatabaseMessageSource extends AbstractResourceBasedMessageSource {
   ...
 }
 or
+@Component
 public class DatabaseMessageSource extends ReloadableResourceBundleMessageSource {
   ...
 }
 or
+@Component
 public class DatabaseMessageSource extends ResourceBundleMessageSource {
   ...
 }
 ```
 ### LocaleResolver 변경
 `Spring Boot`에서는 4가지(`FixedLocaleResolver`, `AcceptHeaderLocaleResolver`, `SessionLocaleResolver`, `CookieLocaleResolver`)
-`localeResolver`를 제공하고 자동구성으로 `SessionLocaleResolver`가 등록됩니다.
-localResolver타입은 `prunus.i18n.locale-resolve-type` properties 설정으로 변경이 가능합니다.
+`localeResolver`를 제공하고 `prunus-i18n` 기본구성으로 `SessionLocaleResolver`가 등록됩니다.
+`prunus.i18n.locale-resolve-type` properties 설정으로 변경이 가능합니다.
 
 ### Locale 변경 API
 사용자의 로케일 변경 API 를 제공합니다.
@@ -63,9 +66,9 @@ body: { "lang" : "ko" }
 ```
 
 ## MessageSourceHolder
-`MessageSourceHolder`는 static method를 통해 소스에서 `messageSource`나 `messageSourceAccessor` 주입 없이
-다국어 메세지를 바로 사용할수 있도록 합니다.
-```
+코드작성시 `prunus-i18n`에서 제공하는 `MessageSourceHolder`의 static method를 통해
+`messageSource`나 `messageSourceAccessor` 주입 없이 사용이 가능합니다.
+```java
 MessageSourceHolder.getMessage("prunus.error"));
 MessageSourceHolder.getMessage("prunus.error", new Object[]{}, Locale.KOREA));
 ```
